@@ -1,7 +1,6 @@
 class UserModel {
   String username;
   String password;
-
   String email;
   String phone;
   List<String>? follower;

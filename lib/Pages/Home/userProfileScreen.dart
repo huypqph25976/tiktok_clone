@@ -11,16 +11,27 @@ import 'package:tiktok_clone2/Pages/Home/UserPage/userInfoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/changePasswordScreen.dart';
 
+import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
+import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
+
+
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
+
+
+
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> with TickerProviderStateMixin{
   String? uid = FirebaseAuth.instance.currentUser?.uid;
-  File? image;
+
+
+
+ 
+
 
   Future<File?> getImage() async {
     var picker = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -41,8 +52,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TabController tabController = TabController(length: 2, vsync: this);
     return Scaffold(
-      body:  FutureBuilder(
+      body: FutureBuilder(
        future: UserService.getUserInfo(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
          if(snapshot.hasError){
@@ -54,8 +66,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
          return SingleChildScrollView(
            child: Column(
-             mainAxisAlignment: MainAxisAlignment.center,
-             crossAxisAlignment: CrossAxisAlignment.center,
              children: [
                const SizedBox(
                  height: 20,
@@ -63,7 +73,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                const Row(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
-                   const SizedBox(
+                    SizedBox(
                      height: 50,
                    ),
                     Center(
@@ -75,11 +85,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                          fontWeight: FontWeight.bold,
                        ),
                      ),
-
                    ),
-
-
-
                  ],
                ),
 
@@ -136,7 +142,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                        Text(
                          "Following",
                          style: TextStyle(
-                             fontSize: 14, color: Colors.grey.shade700),
+                             fontSize: 20, color: Colors.grey.shade700),
                        ),
 
                        Text(
@@ -157,7 +163,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                        Text(
                          "Follower",
                          style: TextStyle(
-                             fontSize: 14, color: Colors.grey.shade700),
+                             fontSize: 20, color: Colors.grey.shade700),
                        ),
 
                        Text(
@@ -170,9 +176,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                      ],
                    ),
                  ],
+
                ),
-           const SizedBox(
-             height: 16,),
+
 
                Row(
                  mainAxisAlignment: MainAxisAlignment.center,
@@ -213,10 +219,42 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                    ),
                  ],
                ),
+               const SizedBox(height: 8,),
+               Container(
+                 child: TabBar(
+                   indicatorColor: Colors.black,
+                   controller: tabController,
+                   tabs: const [
+                     Tab(
+                       icon: Icon(
+                         Icons.person,
+                         color: Colors.black,
+                       ),
+                     ),
+                     Tab(
+                       icon: Icon(
+                         Icons.video_collection,
+                         color: Colors.black,
+                       ),
+                     ),
+                   ],
+                 ),
+               ),
+
+                const SizedBox( height: 8,),
+                 Container(
+                   height: 300,
+                   width: double.maxFinite,
+                   child: TabBarView(
+                   controller: tabController,
+                     children: const [
+                    Tab1(),
+                    Tab2(),
+                  ],
+                 ),
+               ),
              ],
            ),
-
-
          );
         }
       ),

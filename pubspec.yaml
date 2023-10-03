@@ -44,6 +44,7 @@ dependencies:
   another_flushbar: ^1.10.28
   image_picker: ^1.0.4
   video_player: ^2.7.2
+  tab_indicator_styler: ^2.0.0
 
 dev_dependencies:
   flutter_test:
