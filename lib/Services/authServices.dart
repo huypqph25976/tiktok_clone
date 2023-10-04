@@ -23,7 +23,7 @@ class AuthService {
       const storage =  FlutterSecureStorage();
       String? uID = userCredential.user?.uid.toString();
       await storage.write(key: 'uID', value: uID);
-      String? value = await storage.read(key: 'uID');
+
       FocusScope.of(context).unfocus();
       Navigator.pushAndRemoveUntil(
           context,
@@ -79,8 +79,7 @@ class AuthService {
         required uid}) async {
     try {
 
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       await UserService.addUser(
           UID: userCredential.user?.uid, username: username, email: email);
 

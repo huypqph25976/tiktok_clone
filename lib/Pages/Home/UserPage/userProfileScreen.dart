@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
-import 'package:tiktok_clone2/Pages/Home/UserPage/userInfoScreen.dart';
+
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/changePasswordScreen.dart';
 
@@ -27,11 +27,6 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> with TickerProviderStateMixin{
   String? uid = FirebaseAuth.instance.currentUser?.uid;
-
-
-
- 
-
 
   Future<File?> getImage() async {
     var picker = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -184,7 +179,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
                    ElevatedButton(onPressed: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => const UserEditScreen()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => UserEditScreen()));
 
                    },style: ElevatedButton.styleFrom(
                        backgroundColor: Colors.black
@@ -192,7 +187,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                      padding:  EdgeInsets.all(10.0),
                      child: Row(
                        children: [
-                         Text("Edit Profile",
+                         Text("Setting Profile",
                            style: TextStyle(
                                fontSize: 15, color: Colors.white),)
                        ],

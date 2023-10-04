@@ -5,12 +5,12 @@ import 'package:video_player/video_player.dart';
 
 class UploadVideoForm extends StatefulWidget {
 
-  final File videofile;
-  final String videopath;
+  final File videoFile;
+  final String videoPath;
 
-   UploadVideoForm(
-       {required this.videofile,
-       required this.videopath});
+  const UploadVideoForm(
+       { Key? key, required this.videoFile,
+       required this.videoPath}) : super(key: key);
 
 
   @override
@@ -25,7 +25,7 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      playerController = VideoPlayerController.file(widget.videofile);
+      playerController = VideoPlayerController.file(widget.videoFile);
     });
 
     playerController!.initialize();
@@ -49,11 +49,12 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
         child: Column(
           children: [
 
-            //hiển thị máy quay
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: VideoPlayer(playerController!),
+              height: MediaQuery.of(context).size.height / 1.6,
+              child: VideoPlayer(playerController!)
+
+
             )
 
           ],

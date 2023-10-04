@@ -75,6 +75,13 @@ class LoginWithEmail extends StatelessWidget {
                   ),
                   
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+
+                  onSaved: (value) {
+
+                  },
+                  validator: (value){
+                    return validateEmail(value!);
+                  },
                 ),
 
                 const SizedBox(height: 20),
@@ -87,6 +94,7 @@ class LoginWithEmail extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(),
                   ),
                   obscureText: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
 
                 ),
 

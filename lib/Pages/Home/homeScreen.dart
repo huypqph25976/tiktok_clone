@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Home/chatScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/mainVideoScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/uploadVideoScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/userProfileScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Camera//mainVideoScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Camera/uploadVideoScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/UserPage/userProfileScreen.dart';
 import 'package:tiktok_clone2/Widgets/custombutton.dart';
 import 'package:flutter/src/widgets/framework.dart';
 

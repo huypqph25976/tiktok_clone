@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/customText.dart';
