@@ -134,7 +134,7 @@ class RegisterEmail extends StatelessWidget {
 
                 ),
 
-                // Button
+                const SizedBox(width: 20),
                 Container(
                   width: MediaQuery
                       .of(context)

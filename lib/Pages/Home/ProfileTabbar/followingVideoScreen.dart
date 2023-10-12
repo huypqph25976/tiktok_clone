@@ -15,7 +15,7 @@ class _FollowingVideoScreenState extends State<FollowingVideoScreen> {
         child: Text(
           'Following Video Screen',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
       ),

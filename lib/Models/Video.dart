@@ -9,7 +9,7 @@ class Video{
   List comments;
   int shareCount;
   String songName;
-  String songCaption;
+  String caption;
   String videoUrl;
   String profilePhoto;
   String thumbnail;
@@ -22,7 +22,7 @@ class Video{
     required this.comments,
     required this.shareCount,
     required this.songName,
-    required this.songCaption,
+    required this.caption,
     required this.videoUrl,
     required this.profilePhoto,
     required this.thumbnail});
@@ -36,7 +36,7 @@ class Video{
     "comments": comments,
     "shareCount": shareCount,
     "songName": songName,
-    "caption": songCaption,
+    "caption": caption,
     "videoUrl": videoUrl,
     "thumbnail": thumbnail
   };
@@ -52,7 +52,7 @@ class Video{
       comments: snapshot['comments'],
       shareCount: snapshot['shareCount'],
       songName: snapshot['songName'],
-      songCaption: snapshot['caption'],
+      caption: snapshot['caption'],
       videoUrl: snapshot['videoUrl'],
       profilePhoto: snapshot['profilePhoto'],
       thumbnail: snapshot['thumbnail'],

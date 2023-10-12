@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tiktok_clone2/Pages/Home/UserPage/userProfileScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
 import 'package:tiktok_clone2/Widgets/snackBar.dart';
 
@@ -33,8 +34,7 @@ class UserService {
   }) {
     // Call the user's CollectionReference to add a new user
     try {
-      CollectionReference users =
-      FirebaseFirestore.instance.collection('users');
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
       users
           .doc(UID)
           .set({
@@ -43,11 +43,9 @@ class UserService {
         'email': email,
         'following': [],
         'follower': [],
-        'avartaURL':
-        'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
+        'avartarURL': 'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
         'phone': 'None',
-        'age': 'None',
-        'gender': 'None',
+
       })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -74,7 +72,7 @@ class UserService {
           .catchError((error) => print("Failed to update user: $error"));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => UserProfileScreen()),
       );
       getSnackBar(
         'Edit Info',
@@ -100,7 +98,7 @@ class UserService {
       users
           .doc(UID)
           .update({
-        'avartaURL': ImageStorageLink,
+        'avartarURL': ImageStorageLink,
       })
           .then((value) => print("User's Image Updated"))
           .catchError((error) => print("Failed to update user: $error"));
@@ -111,6 +109,39 @@ class UserService {
         'Edit Fail. $e',
         Colors.red,
       ).show(context);
+    }
+  }
+
+  static Future<void> follow(String uid) async {
+
+    String currentUid = FirebaseAuth.instance.currentUser!.uid;
+    print("$currentUid.........$uid");
+
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUid)
+        .get();
+    if ((doc.data()! as dynamic)['following'].contains(uid)) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUid)
+          .update({
+        'following': FieldValue.arrayRemove([uid]),
+      });
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'follower': FieldValue.arrayRemove([currentUid]),
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUid)
+          .update({
+        'following': FieldValue.arrayUnion([uid]),
+      });
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'follower': FieldValue.arrayUnion([currentUid]),
+      });
     }
   }
 

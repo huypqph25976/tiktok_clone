@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tiktok_clone2/Models/Video.dart';
 import 'package:tiktok_clone2/Widgets/snackBar.dart';
 import 'package:uuid/uuid.dart';
@@ -37,7 +40,7 @@ class StorageService{
     }
   }
 
-  static uploadVideo(BuildContext context, String songName, String songCaption,
+  static uploadVideo(BuildContext context, String songName, String caption,
       String videoPath) async {
     try {
       String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -57,10 +60,10 @@ class StorageService{
         comments: [],
         shareCount: 0,
         songName: songName,
-        songCaption: songCaption,
+        caption: caption,
         videoUrl: videoUrl,
         thumbnail: thumbnail,
-        profilePhoto: (userDoc.data()! as Map<String, dynamic>)['avartaURL'],
+        profilePhoto: (userDoc.data()! as Map<String, dynamic>)['avartarURL'],
       );
 
       await FirebaseFirestore.instance
@@ -119,6 +122,19 @@ class StorageService{
       return downloadUrl;
     } catch (e) {
       throw Exception("");
+    }
+  }
+  static saveFile(String linkStorage) async {
+    final tempDir = await getTemporaryDirectory();
+    final path = '${tempDir.path}/$linkStorage';
+    await Dio().download(linkStorage, path,
+        onReceiveProgress: (received, total) {
+
+        });
+    if (linkStorage.contains('.mp4')) {
+      await GallerySaver.saveVideo(path, toDcim: true);
+    } else if (linkStorage.contains('.jpg')) {
+      await GallerySaver.saveImage(path, toDcim: true);
     }
   }
 
