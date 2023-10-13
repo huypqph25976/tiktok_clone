@@ -18,10 +18,10 @@ class UserService {
     return result;
   }
 
-  static Stream getPeopleInfo(String peopleID) {
+  static Stream getPerson(String personID) {
     final CollectionReference users =
     FirebaseFirestore.instance.collection('users');
-    final result = users.doc(peopleID).snapshots();
+    final result = users.doc(personID).snapshots();
 
     return result;
   }
@@ -115,7 +115,6 @@ class UserService {
   static Future<void> follow(String uid) async {
 
     String currentUid = FirebaseAuth.instance.currentUser!.uid;
-    print("$currentUid.........$uid");
 
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('users')

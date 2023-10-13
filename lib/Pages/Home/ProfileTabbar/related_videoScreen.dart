@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
 
 import '../../../Models/Video.dart';
 import '../../../Services/userService.dart';
@@ -51,11 +52,11 @@ class RelatedVideoScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
               child: InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => PeopleInfoScreen(peopleID: id)),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PersonInformation(personID: id)),
+                  );
                 },
                 child: Image(
                   image: NetworkImage(profilePhoto),
@@ -180,7 +181,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         padding: const EdgeInsets.only(
                                           left: 20,
                                         ),
-                                        child: const Column(
+                                        child:  Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -188,30 +189,30 @@ class RelatedVideoScreen extends StatelessWidget {
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Text(
-                                              "username",
-                                              style: TextStyle(
+                                              '@ ${item.username}',
+                                              style: const TextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             Text(
-                                              "username",
-                                              style: TextStyle(
+                                              item.songName,
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            Row(
+                                             Row(
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   Icons.music_note,
                                                   size: 15,
                                                   color: Colors.white,
                                                 ),
                                                 Text(
-                                                  "username",
-                                                  style: TextStyle(
+                                                  item.caption,
+                                                  style: const TextStyle(
                                                     fontSize: 15,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
