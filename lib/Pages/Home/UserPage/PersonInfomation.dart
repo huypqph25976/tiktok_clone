@@ -2,23 +2,30 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
-import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
-import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
-import 'package:tiktok_clone2/Services/authServices.dart';
-import 'package:tiktok_clone2/Services/userService.dart';
+import 'package:tiktok_clone2/Pages/Home/PersonTabbar/PersonTab1.dart';
+import 'package:tiktok_clone2/Pages/Home/PersonTabbar/PersonTab2.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+import '../../../Services/userService.dart';
+import '../Video/uploadVideoForm.dart';
+import 'changePasswordScreen.dart';
+
+class PersonInformation extends StatefulWidget {
+  const PersonInformation({Key? key, required this.personID}) : super(key: key);
+
+  final String personID;
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<PersonInformation> createState() => _PersonInformationState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> with TickerProviderStateMixin {
+class _PersonInformationState extends State<PersonInformation> with TickerProviderStateMixin {
+
+  late TabController tabController;
   String? uid = FirebaseAuth.instance.currentUser?.uid;
+
 
   Future<File?> getImage() async {
     var picker = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -37,83 +44,34 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
         .snapshots();
   }
 
-  showLogoutDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        contentPadding: const EdgeInsets.all(30),
-        children: [
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 25, color: Colors.red),
-                ),
-                Text(
-                  'r u sure bout that?',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-
-            children: [
-              SimpleDialogOption(
-                onPressed: () {
-                  AuthService.Logout(context: context);
-                },
-                child: const Row(
-                  children:  [
-                    Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'Yes',
-                        style: TextStyle(fontSize: 20, color: Colors.green),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Row(
-                  children:  [
-                    Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'No',
-                        style: TextStyle(fontSize: 20, color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  Stream<QuerySnapshot> getPeopleImage(String id) async* {
+    yield* FirebaseFirestore.instance
+        .collection('users')
+        .where('uID', isEqualTo: id)
+        .snapshots();
   }
+
+  pickVideo(ImageSource src, BuildContext context) async {
+    final video = await ImagePicker().pickVideo(source: src);
+    if (video != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UploadVideoForm(
+            videoFile: File(video.path),
+            videoPath: video.path,
+          ),
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 2, vsync: this);
     return Scaffold(
-      body: FutureBuilder(
-          future: UserService.getUserInfo(),
+      body: StreamBuilder(
+          stream: UserService.getPerson(widget.personID),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
               return const Text("error");
@@ -144,6 +102,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           ),
                         ),
                       ),
+                      //
+                      // IconButton(
+                      //   onPressed: () {
+                      //     ChatService.getChatID(
+                      //       context: context,
+                      //       peopleID: snapshot.data.get('uID'),
+                      //       currentUserID: '$uid',
+                      //       peopleName: snapshot.data.get('fullName'),
+                      //       peopleImage: snapshot.data.get('avartaURL'),
+                      //     );
+                      //   },
+                      //   iconSize: 25,
+                      //   icon:  Icon(
+                      //     CupertinoIcons.chat_bubble_fill,
+                      //     color: Colors.black87,
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -156,7 +131,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           height: 100,
                           width: 100,
                           child: StreamBuilder<QuerySnapshot>(
-                            stream: getUserImage(),
+                            stream: getPeopleImage(widget.personID),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (snapshot.hasError) {
@@ -197,7 +172,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                             height: 4,
                           ),
                           Text(
-                            "Following",
+                            "Followed",
                             style: TextStyle(
                                 fontSize: 20, color: Colors.grey.shade700),
                           ),
@@ -219,7 +194,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                             height: 4,
                           ),
                           Text(
-                            "Followed",
+                            "Follower",
                             style: TextStyle(
                                 fontSize: 20, color: Colors.grey.shade700),
                           ),
@@ -239,32 +214,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserEditScreen()));
+                          UserService.follow(widget.personID);
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Setting Profile",
+                            backgroundColor: Colors.pink,
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(horizontal: 60),),
+                            child:  !snapshot.data.get('follower').contains(uid) ?
+
+                             const Text(
+                                "Follow",
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.white),
-                              )
-                            ],
+                              ) : const Icon(Icons.check),
+
                           ),
-                        ),
-                      ),
+
+
                       const SizedBox(
                         width: 8,
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          showLogoutDialog(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
@@ -311,14 +287,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-                   Container(
-                     height: MediaQuery.of(context).size.height,
-                     width: MediaQuery.of(context).size.width,
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
                     child: TabBarView(
                       controller: tabController,
-                      children: const [
-                        Tab1(),
-                        Tab2(),
+                      children:  [
+                        PersonTab1(personID: widget.personID),
+                        PersonTab2(),
+
                       ],
                     ),
                   ),
