@@ -141,9 +141,9 @@ class RelatedVideoScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
         return SafeArea(
-          child: StreamBuilder(
+          child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('videos').where('uid', whereNotIn: [uid]).snapshots(),
-              builder: (BuildContext context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return const Text("Some thing worng?");
                 }
@@ -237,16 +237,18 @@ class RelatedVideoScreen extends StatelessWidget {
                                             children: [
                                               InkWell(
                                                 onTap: () {},
-                                                child: const Icon(
+                                                child:  Icon(
                                                   Icons.favorite,
                                                   size: 40,
-                                                  color: Colors.red,
+                                                  color: snapshot.data!.docs[0]['likes'].contains(uid)
+                                                      ? Colors.red
+                                                      : Colors.white,
                                                 ),
                                               ),
                                               const SizedBox(height: 7),
-                                              const Text(
-                                                "0",
-                                                style: TextStyle(
+                                               Text(
+                                                 '${item.likes.length}',
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.white,
                                                 ),
@@ -260,13 +262,13 @@ class RelatedVideoScreen extends StatelessWidget {
                                                 child: const Icon(
                                                   Icons.comment,
                                                   size: 40,
-                                                  color: Colors.red,
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               const SizedBox(height: 7),
-                                              const Text(
-                                                "0",
-                                                style: TextStyle(
+                                               Text(
+                                                 '${snapshot.data!.docs.length}',
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.white,
                                                 ),
@@ -284,13 +286,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               const SizedBox(height: 7),
-                                              const Text(
-                                                "0",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                ),
-                                              )
+
                                             ],
                                           ),
                                           // CircleAnimation(

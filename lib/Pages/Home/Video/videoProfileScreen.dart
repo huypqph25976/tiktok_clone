@@ -263,7 +263,7 @@ class VideoProfileScreen extends StatelessWidget {
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       width: 2,
                       color: Colors.black,
                     ),
@@ -275,7 +275,7 @@ class VideoProfileScreen extends StatelessWidget {
                       sendComment(_textEditingController.text, videoID);
                       _textEditingController.text = '';
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send_rounded,
                       color: Colors.black,
                     ),
