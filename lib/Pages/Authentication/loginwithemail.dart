@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tiktok_clone2/Pages/Authentication/forgot_pass.dart';
 import 'package:tiktok_clone2/Pages/Authentication/registerEmail.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
@@ -98,18 +99,44 @@ class LoginWithEmail extends StatelessWidget {
 
                 ),
 
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ForgotPass()),
+                    );
+
+                  },
+                  child:Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: const Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.blue,
+                          ),
+                          textAlign: TextAlign.center,),
+                      ),
+                    ],
+                  ),
+                ),
+
                 Container(
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(top: 15),
                   child: ElevatedButton(
                     onPressed: () {
                       doLogin(context);
-
                     },
                     style: ElevatedButton.styleFrom(
 
                       backgroundColor: Colors.redAccent,
                     ),
+
+
                     child: const Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Text(
@@ -121,6 +148,8 @@ class LoginWithEmail extends StatelessWidget {
                       ),
                     ),
                   ),
+
+
                 ),
                 const SizedBox(height: 20,),
                 GestureDetector(
