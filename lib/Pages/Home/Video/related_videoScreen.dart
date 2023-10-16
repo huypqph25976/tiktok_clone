@@ -110,38 +110,18 @@ class RelatedVideoScreen extends StatelessWidget {
     );
   }
 
-  buildMusicAlbum(String profilePhoto) {
-    return SizedBox(
-      width: 50,
-      height: 50,
-      child: Column(
-        children: [
-          Container(
-              padding: const EdgeInsets.all(8),
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Colors.grey,
-                      Colors.white,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(25)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Image(
-                  image: NetworkImage(profilePhoto),
-                  fit: BoxFit.cover,
-                ),
-              ))
-        ],
-      ),
-    );
+  void _showContextMenu(BuildContext context) async {
+    final RenderObject? overlay =
+    Overlay.of(context)?.context.findRenderObject();
+
+
   }
+
 
   showCommentBottomDialog(BuildContext context, String videoID) {
     final TextEditingController textEditingController = TextEditingController();
+    final RenderObject? overlay = Overlay.of(context)?.context.findRenderObject();
+    Offset _tapDownPosition = Offset.zero;
 
     final page2 = SizedBox(
       height: MediaQuery.of(context).size.height * 3 / 4,
@@ -201,85 +181,123 @@ class RelatedVideoScreen extends StatelessWidget {
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             final item = snapshot.data!.docs[index];
-                            return Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            '${item['avartarURL']}'),
+                            return GestureDetector(
+
+                              onTapDown: (TapDownDetails details){
+                                _tapDownPosition = details.globalPosition;
+                              },
+
+                              onLongPress: (){
+                                showMenu(context: context,
+                                    position: RelativeRect.fromRect(
+                                        Rect.fromLTWH(_tapDownPosition.dx, _tapDownPosition.dy, 30, 30),
+                                        Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+                                            overlay.paintBounds.size.height)),
+                                    items: [
+                                      const PopupMenuItem(
+                                        value: 'favorites',
+                                        child: Text('Add To Favorites'),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
+                                      const PopupMenuItem(
+                                        value: 'comment',
+                                        child: Text('Write Comment'),
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${item['username']}',
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black38),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context).size.width * 3 / 4,
-                                            child: Text(
-                                              '${item['content']}',
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontFamily: 'Popins'),
-                                            ),
-                                          ),
-                                          Text(
-                                            item['createdOn'] == null
-                                                ? DateTime.now().toString()
-                                                : DateFormat.yMMMd()
-                                                .add_jm()
-                                                .format(item['createdOn']
-                                                .toDate()),
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black38),
-                                          ),
-                                        ],
+                                      const PopupMenuItem(
+                                        value: 'hide',
+                                        child: Text('Hide'),
                                       ),
-                                      const Spacer(),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(right: 8.0),
-                                        child: Column(
+                                    ]);
+                              },
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              '${item['avartarURL']}'),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                           children: [
-                                            InkWell(
-                                              onTap: () {
-                                                VideoService.likeComment(
-                                                    videoID, item['id']);
-                                              },
-                                              child: Icon(
-                                                Icons.favorite,
-                                                color: snapshot.data!.docs[index]['likes'].contains(uid)
-                                                    ? Colors.red
-                                                    : Colors.grey,
+                                            Text(
+                                              '${item['username']}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black38),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                                  3 /
+                                                  4,
+                                              child: Text(
+                                                '${item['content']}',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black,
+                                                    fontFamily: 'Popins'),
                                               ),
                                             ),
-                                            Text('${item['likes'].length}'),
+                                            Text(
+                                              item['createdOn'] == null
+                                                  ? DateTime.now().toString()
+                                                  : DateFormat.yMMMd()
+                                                  .add_jm()
+                                                  .format(item['createdOn']
+                                                  .toDate()),
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black38),
+                                            ),
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                        const Spacer(),
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                          child: Column(
+                                            children: [
+                                              InkWell(
+                                                onTap: () {
+                                                  VideoService.likeComment(
+                                                      videoID, item['id']);
+                                                },
+                                                child: Icon(
+                                                  Icons.favorite,
+                                                  color: snapshot.data!
+                                                      .docs[index]['likes']
+                                                      .contains(uid)
+                                                      ? Colors.red
+                                                      : Colors.grey,
+                                                ),
+                                              ),
+                                              Text('${item['likes'].length}'),
+
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             );
+
+
                           },
                         ),
                       ),
@@ -361,6 +379,8 @@ class RelatedVideoScreen extends StatelessWidget {
     }).then((value) async {});
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -370,7 +390,7 @@ class RelatedVideoScreen extends StatelessWidget {
               stream: FirebaseFirestore.instance.collection('videos').where('uid', whereNotIn: [uid]).snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
-                  return const Text("Some thing worng?");
+                  return const Text("Some thing wrong?");
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {

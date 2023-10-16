@@ -48,4 +48,13 @@ class VideoService{
   }
 
   static checkLike(String id) {}
+
+  static updateComment(String videoID, String commentId, String content) async{
+    return await FirebaseFirestore.instance
+        .collection('videos')
+        .doc(videoID)
+        .collection('commentList')
+        .doc(commentId)
+        .update({'content': content});
+  }
 }
