@@ -36,33 +36,73 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              getVideoScreen(ImageSource.camera, context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.pink,
-            ),
-            child: const Text(
-              "Record Video",
+          Image.asset('images/uploadVideo.png'),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+            child: Text(
+              "Upload your video",
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+          const Text(
+            "Choose a way to upload videos",
+            style: TextStyle(
+                color: Color(0xff777777),
+                fontSize: 15,
+                fontWeight: FontWeight.w400),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+            child: ElevatedButton(
+              onPressed: () {
+                getVideoScreen(ImageSource.camera, context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.pink,
+              ),
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 60, 10),
+                    child: Icon(Icons.camera),
+                  ),
+                  Text(
+                    "Record Video",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              getVideoScreen(ImageSource.gallery, context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.pink,
-            ),
-            child: const Text(
-              "Upload Video",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: ElevatedButton(
+              onPressed: () {
+                getVideoScreen(ImageSource.gallery, context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+              ),
+              child: const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 60, 10),
+                    child: Icon(Icons.upload),
+                  ),
+                  Text(
+                    "Upload Video",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
