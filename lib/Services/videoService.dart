@@ -22,7 +22,7 @@ class VideoService{
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('videos')
         .doc(videoID)
-        .collection('comments')
+        .collection('commentList')
         .doc(commentId)
         .get();
     String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -30,7 +30,7 @@ class VideoService{
       await FirebaseFirestore.instance
           .collection('videos')
           .doc(videoID)
-          .collection('comments')
+          .collection('commentList')
           .doc(commentId)
           .update({
         'likes': FieldValue.arrayRemove([uid]),
@@ -39,7 +39,7 @@ class VideoService{
       await FirebaseFirestore.instance
           .collection('videos')
           .doc(videoID)
-          .collection('comments')
+          .collection('commentList')
           .doc(commentId)
           .update({
         'likes': FieldValue.arrayUnion([uid]),
