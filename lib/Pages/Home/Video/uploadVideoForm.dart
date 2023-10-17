@@ -117,7 +117,7 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Đang tải lên video của bạn...'),
-                              duration: Duration(seconds: 10),
+                              duration: Duration(minutes: 1),
                             ),
                           );
                           StorageService.uploadVideo(
