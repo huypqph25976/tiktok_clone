@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithemail.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithphone.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,6 +34,41 @@ class _LoginScreen extends State<LoginScreen> {
       Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen(),),);
     }
 
+  }
+
+  facebookLogin() async {
+    final fb = FacebookLogin();
+
+    final res = await fb.logIn(permissions: [
+      FacebookPermission.publicProfile,
+      FacebookPermission.email,
+    ]);
+    // Check result status
+    switch (res.status) {
+      case FacebookLoginStatus.success:
+        final FacebookAccessToken? accessToken = res.accessToken;
+        final profile = await fb.getUserProfile();
+        final imageUrl = await fb.getProfileImageUrl(width: 100);
+        final email = await fb.getUserEmail();
+
+        print('Access token: ${accessToken?.token}');
+        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
+        print('Your profile image: $imageUrl');
+
+        if (email != null)
+          print('And your email is $email');
+        Navigator.push(context, MaterialPageRoute(builder: ((context)=>HomeScreen())));
+
+
+        break;
+      case FacebookLoginStatus.cancel:
+      // User cancel log in
+        break;
+      case FacebookLoginStatus.error:
+      // Log in failed
+        print('Error while log in: ${res.error}');
+        break;
+    }
   }
 
   @override
@@ -112,6 +149,7 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                 ),
 
+                //gg login button
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -136,6 +174,31 @@ class _LoginScreen extends State<LoginScreen> {
                     ],
                   ),
                 ),
+
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      ElevatedButton(onPressed: (){
+                        facebookLogin();
+                      },style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey
+                      ), child: const Padding(
+                        padding:  EdgeInsets.all(15.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.facebook,color: Colors.black,),
+                            SizedBox(width: 20,),
+                            Text("Login with Facebook",
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.black),)
+                          ],
+                        ),
+                      ))
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -147,6 +210,5 @@ class _LoginScreen extends State<LoginScreen> {
 
 
   }
-
-
 }
+
