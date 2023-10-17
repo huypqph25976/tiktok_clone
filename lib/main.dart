@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
 import 'package:tiktok_clone2/firebase_options.dart';
 
  Future<void>main() async {
    WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-  runApp(const MyApp());
+   const storage = FlutterSecureStorage();
+   String? UID = await storage.read(key:'uID');
+  runApp( MyApp(UID:UID));
 
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   final String? UID;
+  const MyApp({super.key,this.UID});
 
   // This widget is the root of your application.
   @override
@@ -24,7 +29,7 @@ class MyApp extends StatelessWidget {
 
 
       ),
-      home: const LoginScreen(),
+      home: UID!=null?const HomeScreen(): const LoginScreen(),
     );
 
 
