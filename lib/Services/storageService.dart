@@ -26,6 +26,23 @@ class StorageService {
     return imageURL;
   }
 
+  static Future<void> deleteVideo(
+      BuildContext context, String videoId, String videoUrl) async {
+    try {
+      final storageRef = FirebaseStorage.instance.refFromURL(videoUrl);
+      await storageRef.delete();
+      await FirebaseFirestore.instance
+          .collection('videos')
+          .doc(videoId)
+          .delete();
+      getSnackBar("Success", "Delete video success", Colors.green)
+          .show(context);
+    } catch (e) {
+      getSnackBar("Failed", "Delete video failed", Colors.red).show(context);
+      throw Exception('Không thể xóa video.');
+    }
+  }
+
   static compressVideo(String videoPath) async {
     try {
       final compressedVideo = await VideoCompress.compressVideo(

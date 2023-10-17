@@ -27,9 +27,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tick Tock',
       debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(),
+      home: const HomeScreen(),
+
       theme: ThemeData(
       ),
       home: UID!=null?const HomeScreen(): const LoginScreen(),
+
     );
   }
 }
