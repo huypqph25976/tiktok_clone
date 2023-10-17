@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/followingVideoScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/related_videoScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Video/followingVideoScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Video/related_videoScreen.dart';
 
 class MainVideoScreen extends StatefulWidget {
   const MainVideoScreen({super.key});

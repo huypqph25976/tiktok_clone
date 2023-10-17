@@ -69,7 +69,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   style: TextStyle(fontSize: 25, color: Colors.red),
                 ),
                 Text(
-                  'r u sure bout that?',
+                  'Are you sure about that?',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
