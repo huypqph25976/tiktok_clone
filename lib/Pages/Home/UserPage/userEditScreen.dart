@@ -18,6 +18,7 @@ class UserEditScreen extends StatelessWidget {
   TextEditingController phoneController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
 
   final keyUser = GlobalKey<FormState>();
 
@@ -28,6 +29,7 @@ class UserEditScreen extends StatelessWidget {
         context: context,
         phone: phoneController.text,
         username: usernameController.text,
+        bio : bioController.text,
       );
     }
   }
@@ -47,6 +49,15 @@ class UserEditScreen extends StatelessWidget {
       return "Empty";
     } else if (value.length != 10) {
       return "wrong number";
+    } else {
+      return null;
+    }
+  }
+  String? validateBio(String value) {
+    if (value == '') {
+      return "Empty";
+    } else if (value.length >=50) {
+      return "Too long";
     } else {
       return null;
     }
@@ -166,15 +177,9 @@ class UserEditScreen extends StatelessWidget {
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                         hintText: "Username",
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.pink, width: 3.0),
-                        ),
+
                         prefixIcon: Icon(Icons.person, color: Colors.black),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.pink, width: 3.0),
-                        ),
+
                       ),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onSaved: (value) {},
@@ -182,6 +187,7 @@ class UserEditScreen extends StatelessWidget {
                         return validateUsername(value!);
                       },
                     ),
+
 
                     //Phone
                     const SizedBox(
@@ -193,20 +199,33 @@ class UserEditScreen extends StatelessWidget {
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                         hintText: "Phone",
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.pink, width: 3.0),
-                        ),
+
                         prefixIcon: Icon(Icons.phone, color: Colors.black),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.pink, width: 3.0),
-                        ),
+
                       ),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onSaved: (value) {},
                       validator: (value) {
-                        return validateUsername(value!);
+                        return validatePhone(value!);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      controller: bioController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                        hintText: "Bio",
+
+                        prefixIcon: Icon(Icons.person, color: Colors.black),
+
+                      ),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onSaved: (value) {},
+                      validator: (value) {
+                        return validateBio(value!);
                       },
                     ),
 

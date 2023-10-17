@@ -8,7 +8,8 @@ class UploadVideoForm extends StatefulWidget {
   final File videoFile;
   final String videoPath;
 
-  UploadVideoForm({Key? key, required this.videoFile, required this.videoPath})
+  const UploadVideoForm(
+      {Key? key, required this.videoFile, required this.videoPath})
       : super(key: key);
 
   @override
@@ -64,11 +65,11 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 2 / 3,
-                height: MediaQuery.of(context).size.height / 1.5,
+                height: MediaQuery.of(context).size.height / 1.6,
                 child: VideoPlayer(playerController!),
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
               Form(
                 key: formKey,
@@ -76,14 +77,14 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
                       child: TextField(
                         controller: songNameController,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                           hintText: "Song Name",
-                          prefixIcon: Icon(Icons.music_video_sharp,
-                              color: Colors.black),
+                          prefixIcon:
+                              Icon(Icons.music_note, color: Colors.black),
                           enabledBorder: OutlineInputBorder(),
                         ),
                       ),
@@ -93,14 +94,14 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
                       child: TextField(
                         controller: captionController,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                           hintText: "Caption",
                           prefixIcon:
-                              Icon(Icons.slideshow_sharp, color: Colors.black),
+                              Icon(Icons.text_fields, color: Colors.black),
                           enabledBorder: OutlineInputBorder(),
                         ),
                       ),
@@ -108,41 +109,33 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            StorageService.uploadVideo(
-                                context,
-                                songNameController.text,
-                                captionController.text,
-                                widget.videoPath);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
-                          child: const Padding(
-                              padding: EdgeInsets.all(15.0),
-                              child: Text(
-                                "Upload",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              )),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
-                          child: const Padding(
-                              padding: EdgeInsets.all(15.0),
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              )),
-                        ),
-                      ],
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Đang tải lên video của bạn...'),
+                              duration: Duration(minutes: 1),
+                            ),
+                          );
+                          StorageService.uploadVideo(
+                              context,
+                              songNameController.text,
+                              captionController.text,
+                              widget.videoPath);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black),
+                        child: const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Text(
+                              "Upload",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            )),
+                      ),
                     ),
                   ],
                 ),
