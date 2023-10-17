@@ -12,9 +12,8 @@ import 'package:tiktok_clone2/Widgets/snackBar.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_compress/video_compress.dart';
 
-
-class StorageService{
-  static Future<String> uploadImage(File? imageFile) async{
+class StorageService {
+  static Future<String> uploadImage(File? imageFile) async {
     String fileName = const Uuid().v1();
     String currentUid = FirebaseAuth.instance.currentUser!.uid;
     var ref = FirebaseStorage.instance
@@ -26,7 +25,6 @@ class StorageService{
     String imageURL = await uploadTask.ref.getDownloadURL();
     return imageURL;
   }
-
 
   static compressVideo(String videoPath) async {
     try {
@@ -45,12 +43,13 @@ class StorageService{
     try {
       String? uid = FirebaseAuth.instance.currentUser?.uid;
       DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       // get id
 
       String videoId = FirebaseFirestore.instance.collection("videos").doc().id;
       String videoUrl = await uploadVideoToStorage(videoId, videoPath);
-      String thumbnail = await uploadImageToStorage("${videoId}_thumbnail", videoPath);
+      String thumbnail =
+          await uploadImageToStorage("${videoId}_thumbnail", videoPath);
 
       Video video = Video(
         username: (userDoc.data()! as Map<String, dynamic>)['username'],
@@ -65,22 +64,22 @@ class StorageService{
         thumbnail: thumbnail,
         profilePhoto: (userDoc.data()! as Map<String, dynamic>)['avartarURL'],
       );
-
       await FirebaseFirestore.instance
           .collection('videos')
           .doc(videoId)
           .set(
-        video.toJson(),
-      )
+            video.toJson(),
+          )
           .then((value) {
         Navigator.of(context).pop();
+
         getSnackBar(
           'Push Video',
           'Success.',
           Colors.green,
         ).show(context);
       });
-
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
       //Get.back();
     } catch (e) {
       getSnackBar('Error Uploading Video', e.toString(), Colors.redAccent);
@@ -92,8 +91,11 @@ class StorageService{
       String id, String videoPath) async {
     String currentUid = FirebaseAuth.instance.currentUser!.uid;
 
-    Reference ref =
-    FirebaseStorage.instance.ref().child('thumbnails').child(currentUid).child(id);
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('thumbnails')
+        .child(currentUid)
+        .child(id);
     UploadTask uploadTask = ref.putFile(await getThumbnail(videoPath));
     TaskSnapshot snap = await uploadTask;
     String downloadUrl = await snap.ref.getDownloadURL();
@@ -124,19 +126,16 @@ class StorageService{
       throw Exception("");
     }
   }
+
   static saveFile(String linkStorage) async {
     final tempDir = await getTemporaryDirectory();
     final path = '${tempDir.path}/$linkStorage';
-    await Dio().download(linkStorage, path,
-        onReceiveProgress: (received, total) {
-
-        });
+    await Dio()
+        .download(linkStorage, path, onReceiveProgress: (received, total) {});
     if (linkStorage.contains('.mp4')) {
       await GallerySaver.saveVideo(path, toDcim: true);
     } else if (linkStorage.contains('.jpg')) {
       await GallerySaver.saveImage(path, toDcim: true);
     }
   }
-
-
 }

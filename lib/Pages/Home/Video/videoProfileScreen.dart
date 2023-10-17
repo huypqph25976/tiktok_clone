@@ -78,7 +78,7 @@ class VideoProfileScreen extends StatelessWidget {
   Future<void> sendComment(String message, String videoID) async {
     if (message == '') return;
     final result = await users.doc(uid).get();
-    final String avatarURL = result.get('avartarURL');
+    final String avartarURL = result.get('avartarURL');
     final String username = result.get('username');
     var allDocs = await FirebaseFirestore.instance
         .collection('videos')
@@ -90,7 +90,7 @@ class VideoProfileScreen extends StatelessWidget {
       'createdOn': FieldValue.serverTimestamp(),
       'uID': uid,
       'content': message,
-      'avatarURL': avatarURL,
+      'avartarURL': avartarURL,
       'username': username,
       'id': 'Comment $len',
       'likes': []
@@ -98,7 +98,7 @@ class VideoProfileScreen extends StatelessWidget {
   }
 
   showBottomSheet(BuildContext context, String videoID) {
-    final TextEditingController _textEditingController =
+    final TextEditingController textEditingController =
     TextEditingController();
     final page2 = SizedBox(
       height: MediaQuery.of(context).size.height * 3 / 4,
@@ -173,7 +173,7 @@ class VideoProfileScreen extends StatelessWidget {
                                     children: [
                                       CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                            '${item['avatarURL']}'),
+                                            '${item['avartarURL']}'),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -228,9 +228,7 @@ class VideoProfileScreen extends StatelessWidget {
                                               },
                                               child: Icon(
                                                 Icons.favorite,
-                                                color: snapshot.data!
-                                                    .docs[index]['likes']
-                                                    .contains(uid)
+                                                color: snapshot.data!.docs[index]['likes'].contains(uid)
                                                     ? Colors.red
                                                     : Colors.grey,
                                               ),
@@ -259,7 +257,7 @@ class VideoProfileScreen extends StatelessWidget {
             child: SizedBox(
               height: 40,
               child: TextField(
-                controller: _textEditingController,
+                controller: textEditingController,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -272,8 +270,8 @@ class VideoProfileScreen extends StatelessWidget {
                   hintText: "Comment here ...",
                   suffixIcon: IconButton(
                     onPressed: () {
-                      sendComment(_textEditingController.text, videoID);
-                      _textEditingController.text = '';
+                      sendComment(textEditingController.text, videoID);
+                      textEditingController.text = '';
                     },
                     icon: const Icon(
                       Icons.send_rounded,
@@ -287,14 +285,14 @@ class VideoProfileScreen extends StatelessWidget {
         ],
       ),
     );
-    //_scaffoldKey.currentState.showBottomSheet((context) => null);
+
     showModalBottomSheet<void>(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(7),
         ),
       ),
-      //enableDrag: true,
+
       backgroundColor: Colors.white,
       context: context,
       builder: (context) {

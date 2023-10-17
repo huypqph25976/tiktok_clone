@@ -287,14 +287,14 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-                  Container(
+                   Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: TabBarView(
                       controller: tabController,
                       children:  [
                         PersonTab1(personID: widget.personID),
-                        PersonTab2(),
+                        PersonTab2(personID: widget.personID),
 
                       ],
                     ),
