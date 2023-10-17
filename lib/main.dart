@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
 import 'package:tiktok_clone2/firebase_options.dart';
+
+import 'Pages/Home/UserPage/userProfileScreen.dart';
 
  Future<void>main() async {
    WidgetsFlutterBinding.ensureInitialized();

@@ -45,6 +45,7 @@ class UserService {
         'follower': [],
         'avartarURL': 'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
         'phone': 'None',
+        'bio':'Bio not yet'
 
       })
           .then((value) => print("User Added"))
@@ -56,6 +57,7 @@ class UserService {
   static editUserFetch(
       {required BuildContext context,
         required phone,
+        required bio,
         required username}) async {
     try {
       CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -66,6 +68,7 @@ class UserService {
           .update({
         'username': username,
         'phone': phone,
+        'bio' : bio,
 
       })
           .then((value) => print("User Updated"))
