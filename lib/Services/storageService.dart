@@ -26,11 +26,14 @@ class StorageService {
     return imageURL;
   }
 
-  static Future<void> deleteVideo(
-      BuildContext context, String videoId, String videoUrl) async {
+  static Future<void> deleteVideo(BuildContext context, String videoId,
+      String videoUrl, String thumbnail) async {
     try {
-      final storageRef = FirebaseStorage.instance.refFromURL(videoUrl);
-      await storageRef.delete();
+      final storageRefVideo = FirebaseStorage.instance.refFromURL(videoUrl);
+      final storageRefThumbnail =
+          FirebaseStorage.instance.refFromURL(thumbnail);
+      await storageRefVideo.delete();
+      await storageRefThumbnail.delete();
       await FirebaseFirestore.instance
           .collection('videos')
           .doc(videoId)

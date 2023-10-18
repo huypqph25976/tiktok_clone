@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/videoProfileScreen.dart';
 import 'package:tiktok_clone2/Services/storageService.dart';
+import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 class Tab2 extends StatelessWidget {
   const Tab2({super.key});
@@ -71,8 +74,24 @@ class Tab2 extends StatelessWidget {
                             ),
                             PopupMenuItem(
                               onTap: () {
-                                StorageService.deleteVideo(
-                                    context, item['id'], item['videoUrl']);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    print(item['thumbnail']);
+                                    return DialogWidget(
+                                      label: 'Log out',
+                                      content: 'Log out your account?',
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        StorageService.deleteVideo(
+                                            context,
+                                            item['id'],
+                                            item['videoUrl'],
+                                            item['thumbnail']);
+                                      },
+                                    );
+                                  },
+                                );
                               },
                               value: 'delete',
                               child: const Text(
