@@ -147,16 +147,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                    Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 50,
-                      ),
+                      const SizedBox(height: 50,),
+
                       const SizedBox(width: 150,),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
 
-                            Text(
+                            const Text(
                               "Profile",
                               style: TextStyle(
                                 fontSize: 20,
@@ -257,7 +256,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 fontSize: 20),
 
                           ),
-                          Text(
+                          const Text(
                             "Following",
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
@@ -280,7 +279,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20),
                           ),
-                          Text(
+                         const Text(
                             "Followed",
                               style: TextStyle
                                 (color: Colors.grey, fontSize: 12),
@@ -304,7 +303,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20),
                           ),
-                          Text(
+                          const Text(
                             "Like",
                             style: TextStyle
                               (color: Colors.grey, fontSize: 12),
@@ -314,13 +313,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                     ],
                   ),
 
-
-
-
-                  SizedBox(height: 15),
-
-
-
+                  const SizedBox(height: 15),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -374,9 +367,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 8,
-                      ),
+                      const SizedBox(width: 8,),
+
                       ElevatedButton(
 
                         onPressed: () {
@@ -409,11 +401,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                         color: Colors.black,
                         fontSize: 17),
                   ),
-
-
-
-
-
 
                   Container(
                     child: TabBar(

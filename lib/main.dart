@@ -9,25 +9,12 @@ import 'Pages/Home/UserPage/userProfileScreen.dart';
 
  Future<void>main() async {
    WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+   await Firebase.initializeApp(
+     options: DefaultFirebaseOptions.currentPlatform,);
    const storage = FlutterSecureStorage();
-   String? UID = await storage.read(key:'uID');
-  runApp( MyApp(UID:UID));
-
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-    apiKey: 'AIzaSyD8xSXM3WMc8a11u1Dp4Dco8XJjpbawUnw',
-    appId: '1:117938042068:android:2c128039076c3084f9b741',
-    messagingSenderId: '117938042068',
-    projectId: 'tiktok-clone-4fde1',
-    storageBucket: 'tiktok-clone-4fde1.appspot.com',
-  ));
-  runApp(const MyApp());
-
-}
+   String? UID = await storage.read(key: 'uID');
+   runApp(MyApp(UID: UID));
+ }
 
 class MyApp extends StatelessWidget {
    final String? UID;
@@ -42,8 +29,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
       ),
       home: UID!=null?const HomeScreen(): const LoginScreen(),
-      theme: ThemeData(),
-      home: const LoginScreen(),
 
     );
   }

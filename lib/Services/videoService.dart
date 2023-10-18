@@ -49,12 +49,16 @@ class VideoService{
 
   static checkLike(String id) {}
 
-  static updateComment(String videoID, String commentId, String content) async{
+  static updateComment(BuildContext context, String videoID, String commentId, String comment) async{
     return await FirebaseFirestore.instance
         .collection('videos')
         .doc(videoID)
         .collection('commentList')
         .doc(commentId)
-        .update({'content': content});
+        .update({'content': comment});
+  }
+
+  static deleteComment(BuildContext context, String videoID, String commentId) async{
+     return await FirebaseFirestore.instance..collection('videos').doc(videoID).collection('commentList').doc(commentId).delete();
   }
 }
