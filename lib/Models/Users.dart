@@ -6,6 +6,7 @@ class UserModel {
   List<String>? follower;
   List<String>? follows;
   String avatarURL;
+  String bio;
 
   UserModel({
     required this.username,
@@ -13,6 +14,7 @@ class UserModel {
     required this.email,
     required this.phone,
     required this.avatarURL,
+    required this.bio,
      this.follower,
      this.follows,
 });

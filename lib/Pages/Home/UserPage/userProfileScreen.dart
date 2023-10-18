@@ -8,9 +8,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoForm.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
+
+import '../ProfileTabbar/Tab3.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -22,6 +25,19 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen>
     with TickerProviderStateMixin {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
+  getVideoScreen(ImageSource source, BuildContext context) async {
+    final videoFile = await ImagePicker().pickVideo(source: source);
+    if (videoFile != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => UploadVideoForm(
+            videoFile: File(videoFile.path),
+            videoPath: videoFile.path,
+          ),
+        ),
+      );
+    }
+  }
 
   Future<File?> getImage() async {
     var picker = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -42,7 +58,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
     return Scaffold(
       body: FutureBuilder(
           future: UserService.getUserInfo(),
@@ -60,20 +76,60 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
-                      Center(
-                        child: Text(
-                          "Profile",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      const SizedBox(
+                        width: 150,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text(
+                              "Profile",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 90,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogWidget(
+                                          label: 'Your Label',
+                                          content: 'Your Content',
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            AuthService.Logout(
+                                                context: context);
+                                          });
+                                    });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white),
+                              child: const Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.logout,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -115,12 +171,11 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                     '${snapshot.data.get('username')}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: Colors.pink,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      color: Color(0xff555555),
+                      fontSize: 16,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -130,43 +185,65 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             height: 4,
                           ),
                           Text(
-                            "Following",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
-                          ),
-                          Text(
                             snapshot.data.get('following').length.toString(),
                             style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Colors.black),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          const Text(
+                            "Following",
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ],
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 40,
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           const SizedBox(
                             height: 4,
                           ),
                           Text(
+                            snapshot.data.get('follower').length.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          const Text(
                             "Followed",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 50,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(
+                            height: 4,
                           ),
                           Text(
                             snapshot.data.get('follower').length.toString(),
                             style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Colors.black),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          const Text(
+                            "Like",
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ],
                       ),
                     ],
                   ),
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -178,15 +255,40 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   builder: (context) => UserEditScreen()));
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
+                            backgroundColor: Colors.white),
                         child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           child: Row(
                             children: [
                               Text(
                                 "Setting Profile",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          getVideoScreen(ImageSource.gallery, context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
                               )
                             ],
                           ),
@@ -212,15 +314,14 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
+                            backgroundColor: Colors.white),
                         child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: EdgeInsets.all(5.0),
                           child: Row(
                             children: [
-                              Text(
-                                "Logout",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
+                              Icon(
+                                Icons.add,
+                                color: Colors.black,
                               )
                             ],
                           ),
@@ -238,13 +339,19 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                       tabs: const [
                         Tab(
                           icon: Icon(
+                            Icons.video_collection,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Tab(
+                          icon: Icon(
                             Icons.person,
                             color: Colors.black,
                           ),
                         ),
                         Tab(
                           icon: Icon(
-                            Icons.video_collection,
+                            Icons.save,
                             color: Colors.black,
                           ),
                         ),
@@ -260,8 +367,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                     child: TabBarView(
                       controller: tabController,
                       children: const [
-                        Tab1(),
                         Tab2(),
+                        Tab1(),
+                        Tab3(),
                       ],
                     ),
                   ),
