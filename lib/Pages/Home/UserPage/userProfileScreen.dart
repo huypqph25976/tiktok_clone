@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
+import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -17,7 +19,8 @@ class UserProfileScreen extends StatefulWidget {
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> with TickerProviderStateMixin {
+class _UserProfileScreenState extends State<UserProfileScreen>
+    with TickerProviderStateMixin {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
 
   Future<File?> getImage() async {
@@ -35,77 +38,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
         .collection('users')
         .where('uID', isEqualTo: currentUserID)
         .snapshots();
-  }
-
-  showLogoutDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        contentPadding: const EdgeInsets.all(30),
-        children: [
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 25, color: Colors.red),
-                ),
-                Text(
-                  'r u sure bout that?',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-
-            children: [
-              SimpleDialogOption(
-                onPressed: () {
-                  AuthService.Logout(context: context);
-                },
-                child: const Row(
-                  children:  [
-                    Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'Yes',
-                        style: TextStyle(fontSize: 20, color: Colors.green),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Row(
-                  children:  [
-                    Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        'No',
-                        style: TextStyle(fontSize: 20, color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -162,7 +94,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                               if (snapshot.hasError) {
                                 return const Text("error");
                               }
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               }
@@ -264,7 +197,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          showLogoutDialog(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogWidget(
+                                label: 'Log out',
+                                content: 'Log out your account?',
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  AuthService.Logout(context: context);
+                                },
+                              );
+                            },
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
@@ -286,8 +231,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-
-
                   Container(
                     child: TabBar(
                       indicatorColor: Colors.black,
@@ -311,9 +254,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-                   Container(
-                     height: MediaQuery.of(context).size.height,
-                     width: MediaQuery.of(context).size.width,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
                     child: TabBarView(
                       controller: tabController,
                       children: const [
