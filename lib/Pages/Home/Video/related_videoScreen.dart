@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
 
 import '../../../Models/Video.dart';
+import '../../../Services/userService.dart';
 import '../../../Services/videoService.dart';
 import '../../../Widgets/videoItem.dart';
 
@@ -17,6 +18,8 @@ class RelatedVideoScreen extends StatelessWidget {
   final CollectionReference users = FirebaseFirestore.instance.collection('users');
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
+
+
 
   buildProfile(
       BuildContext context, String profilePhoto, String id, String videoUid) {
@@ -53,7 +56,41 @@ class RelatedVideoScreen extends StatelessWidget {
             ),
           ),
         ),
-
+            StreamBuilder(
+                stream: users.doc(uid).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox();
+                  }
+                  bool isFollowing = snapshot.data!.get('following').contains(videoUid);
+                  return Positioned(
+                    left: 20,
+                    bottom: 0,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: InkWell(
+                        onTap: () async {
+                          if (!isFollowing) {
+                            await UserService.follow(videoUid); // Function to follow a user
+                          }
+                        },
+                        child: Container(
+                          key: ValueKey<int>(isFollowing ? 1 : 2),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isFollowing ? Colors.white : Colors.pink,
+                          ),
+                          child: Icon(
+                            isFollowing ? Icons.check : Icons.add,
+                            color: isFollowing ? Colors.pink : Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+            )
       ]),
     );
   }
@@ -111,7 +148,7 @@ class RelatedVideoScreen extends StatelessWidget {
                     child: Container(),
                   );
                 }
-                //Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
                 if (snapshot.hasData) {
                   return Column(
                     children: [
@@ -127,11 +164,11 @@ class RelatedVideoScreen extends StatelessWidget {
                               },
 
                               onLongPress: (){
+                                
                                 showMenu(context: context,
                                     position: RelativeRect.fromRect(
                                         Rect.fromLTWH(tapDownPosition.dx, tapDownPosition.dy, 30, 30),
-                                        Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
-                                            overlay.paintBounds.size.height)),
+                                        Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width, overlay.paintBounds.size.height)),
                                     items: [
                                        PopupMenuItem(
                                         value: 'update',
@@ -236,8 +273,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                    children: [
                                                      SimpleDialogOption(
                                                        onPressed: () {
-                                                         VideoService.deleteComment(context, item['videoID'], item['id']);
-                                                         Navigator.of(context).pop();
+                                                         VideoService.deleteComment(videoID, item['id']);
                                                        },
                                                        child: const Row(
                                                          children:  [
@@ -570,8 +606,6 @@ class RelatedVideoScreen extends StatelessWidget {
                                               )
                                             ],
                                           ),
-
-
 
                                           Column(
                                             children: [
