@@ -531,8 +531,8 @@ class VideoProfileScreen extends StatelessWidget {
               StorageService.saveFile(url);
               Navigator.of(context).pop();
             },
-            child: Row(
-              children: const [
+            child: const Row(
+              children:  [
                 Icon(Icons.save_alt),
                 Padding(
                   padding: EdgeInsets.all(7.0),
@@ -546,8 +546,8 @@ class VideoProfileScreen extends StatelessWidget {
           ),
           SimpleDialogOption(
             onPressed: () => Navigator.of(context).pop(),
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 Icon(
                   Icons.cancel,
                   color: Colors.red,

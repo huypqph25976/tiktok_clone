@@ -8,6 +8,7 @@ import 'package:tiktok_clone2/firebase_options.dart';
 
 import 'Pages/Home/UserPage/userProfileScreen.dart';
 
+
  Future<void>main() async {
    WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp(
@@ -19,9 +20,10 @@ import 'Pages/Home/UserPage/userProfileScreen.dart';
 
 
 
+
 class MyApp extends StatelessWidget {
-   final String? UID;
-  const MyApp({super.key,this.UID});
+  final String? UID;
+  const MyApp({super.key, this.UID});
 
   // This widget is the root of your application.
   @override
@@ -29,9 +31,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tick Tock',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-      ),
-      home: UID!=null?const HomeScreen(): const LoginScreen(),
+
+      theme: ThemeData(),
+      home: UID != null ? const HomeScreen() : const LoginScreen(),
 
     );
   }

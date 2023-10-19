@@ -14,48 +14,34 @@ class ShowfoloweScreen extends StatefulWidget {
 }
 
 class _ShowfoloweScreenState extends State<ShowfoloweScreen> {
-  var tabIndex = 0;
-  List screenIndex = [
-    Follower(),
-    Follower(),
-    const Following()
-  ];
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
 
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index){
-          setState(() {
-            tabIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white24,
-        currentIndex: tabIndex,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                size: 30,
-              ),
-              label: 'Follower'
-          ),
+          backgroundColor: Colors.white,
+          title: const Text('sdssa',textAlign: TextAlign.center,),
+          bottom:  TabBar(
+            indicatorColor: Colors.white,
+            tabs: [
+              Tab(child: Text("Following", style: TextStyle(fontSize: 20,color: Colors.grey),)),
+              Tab(child: Text("Follower", style: TextStyle(fontSize: 20, color: Colors.grey),)),
+            ],
 
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.chat,
-                size: 30,
-              ),
-              label: 'Following'
           ),
-        ],
+        ),
+        body: TabBarView(
+          children: [
+            Following(),
+            const Follower(),
+          ],
+        ),
+
       ),
-      body: screenIndex[tabIndex],
     );
-
   }
 }
