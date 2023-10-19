@@ -10,7 +10,13 @@ import 'Pages/Home/UserPage/userProfileScreen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyD8xSXM3WMc8a11u1Dp4Dco8XJjpbawUnw',
+      appId: '1:117938042068:android:2c128039076c3084f9b741',
+      messagingSenderId: '117938042068',
+      projectId: 'tiktok-clone-4fde1',
+      storageBucket: 'tiktok-clone-4fde1.appspot.com',
+    ),
   );
   const storage = FlutterSecureStorage();
   String? UID = await storage.read(key: 'uID');

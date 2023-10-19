@@ -15,7 +15,8 @@ class RelatedVideoScreen extends StatelessWidget {
 
   String? uid = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference videos = FirebaseFirestore.instance.collection('videos');
-  final CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
 
@@ -34,15 +35,12 @@ class RelatedVideoScreen extends StatelessWidget {
     });
   }
 
-
-
   buildProfile(
       BuildContext context, String profilePhoto, String id, String videoUid) {
     return SizedBox(
       width: 60,
       height: 60,
-      child: Stack(
-          children: [
+      child: Stack(children: [
         Positioned(
           left: 5,
           child: Container(
@@ -77,7 +75,8 @@ class RelatedVideoScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const SizedBox();
               }
-              bool isFollowing = snapshot.data!.get('following').contains(videoUid);
+              bool isFollowing =
+                  snapshot.data!.get('following').contains(videoUid);
               return Positioned(
                 left: 20,
                 bottom: 0,
@@ -112,16 +111,14 @@ class RelatedVideoScreen extends StatelessWidget {
 
   void _showContextMenu(BuildContext context) async {
     final RenderObject? overlay =
-    Overlay.of(context)?.context.findRenderObject();
-
-
+        Overlay.of(context).context.findRenderObject();
   }
-
 
   showCommentBottomDialog(BuildContext context, String videoID) {
     final TextEditingController textEditingController = TextEditingController();
-    final RenderObject? overlay = Overlay.of(context)?.context.findRenderObject();
-    Offset _tapDownPosition = Offset.zero;
+    final RenderObject? overlay =
+        Overlay.of(context).context.findRenderObject();
+    Offset tapDownPosition = Offset.zero;
 
     final page2 = SizedBox(
       height: MediaQuery.of(context).size.height * 3 / 4,
@@ -137,7 +134,7 @@ class RelatedVideoScreen extends StatelessWidget {
             children: [
               StreamBuilder<QuerySnapshot>(
                 stream:
-                videos.doc(videoID).collection('commentList').snapshots(),
+                    videos.doc(videoID).collection('commentList').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
@@ -182,16 +179,19 @@ class RelatedVideoScreen extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             final item = snapshot.data!.docs[index];
                             return GestureDetector(
-
-                              onTapDown: (TapDownDetails details){
-                                _tapDownPosition = details.globalPosition;
+                              onTapDown: (TapDownDetails details) {
+                                tapDownPosition = details.globalPosition;
                               },
-
-                              onLongPress: (){
-                                showMenu(context: context,
+                              onLongPress: () {
+                                showMenu(
+                                    context: context,
                                     position: RelativeRect.fromRect(
-                                        Rect.fromLTWH(_tapDownPosition.dx, _tapDownPosition.dy, 30, 30),
-                                        Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+                                        Rect.fromLTWH(tapDownPosition.dx,
+                                            tapDownPosition.dy, 30, 30),
+                                        Rect.fromLTWH(
+                                            0,
+                                            0,
+                                            overlay!.paintBounds.size.width,
                                             overlay.paintBounds.size.height)),
                                     items: [
                                       const PopupMenuItem(
@@ -217,9 +217,9 @@ class RelatedVideoScreen extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         CircleAvatar(
                                           backgroundImage: NetworkImage(
@@ -230,7 +230,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${item['username']}',
@@ -240,8 +240,8 @@ class RelatedVideoScreen extends StatelessWidget {
                                             ),
                                             SizedBox(
                                               width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
+                                                      .size
+                                                      .width *
                                                   3 /
                                                   4,
                                               child: Text(
@@ -256,9 +256,9 @@ class RelatedVideoScreen extends StatelessWidget {
                                               item['createdOn'] == null
                                                   ? DateTime.now().toString()
                                                   : DateFormat.yMMMd()
-                                                  .add_jm()
-                                                  .format(item['createdOn']
-                                                  .toDate()),
+                                                      .add_jm()
+                                                      .format(item['createdOn']
+                                                          .toDate()),
                                               style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black38),
@@ -268,7 +268,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         const Spacer(),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                              const EdgeInsets.only(right: 8.0),
                                           child: Column(
                                             children: [
                                               InkWell(
@@ -279,14 +279,13 @@ class RelatedVideoScreen extends StatelessWidget {
                                                 child: Icon(
                                                   Icons.favorite,
                                                   color: snapshot.data!
-                                                      .docs[index]['likes']
-                                                      .contains(uid)
+                                                          .docs[index]['likes']
+                                                          .contains(uid)
                                                       ? Colors.red
                                                       : Colors.grey,
                                                 ),
                                               ),
                                               Text('${item['likes'].length}'),
-
                                             ],
                                           ),
                                         ),
@@ -296,8 +295,6 @@ class RelatedVideoScreen extends StatelessWidget {
                                 ],
                               ),
                             );
-
-
                           },
                         ),
                       ),
@@ -379,196 +376,195 @@ class RelatedVideoScreen extends StatelessWidget {
     }).then((value) async {});
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-        return SafeArea(
-          child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('videos').where('uid', whereNotIn: [uid]).snapshots(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  return const Text("Some thing wrong?");
-                }
+    return SafeArea(
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('videos')
+              .where('uid', whereNotIn: [uid]).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return const Text("Some thing wrong?");
+            }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-                  return PageView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    controller: PageController(initialPage: 0, viewportFraction: 1),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-
-                      final Video item = Video.fromSnap(snapshot.data!.docs[index]);
-                      return Stack(
-                        children: [
-                          VideoItems(
-                            videoUrl: item.videoUrl,
-                          ),
-                          Column(
+            return PageView.builder(
+              itemCount: snapshot.data!.docs.length,
+              controller: PageController(initialPage: 0, viewportFraction: 1),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                final Video item = Video.fromSnap(snapshot.data!.docs[index]);
+                return Stack(
+                  children: [
+                    VideoItems(
+                      videoUrl: item.videoUrl,
+                    ),
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const SizedBox(
-                                height: 100,
-                              ),
                               Expanded(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                          left: 20,
-                                        ),
-                                        child:  Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              '@ ${item.username}',
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              item.songName,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                             Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.music_note,
-                                                  size: 15,
-                                                  color: Colors.white,
-                                                ),
-                                                Text(
-                                                  item.caption,
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        '@ ${item.username}',
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 100,
-                                      margin:
-                                          EdgeInsets.only(top: size.height / 5),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      Text(
+                                        item.songName,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Row(
                                         children: [
-                                          buildProfile(context, item.profilePhoto, item.uid, item.uid),
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {VideoService.likeVideo(item.id);},
-                                                child:  Icon(
-                                                  Icons.favorite,
-                                                  size: 40,
-                                                  color: snapshot.data!.docs[index]['likes'].contains(uid)
-                                                      ? Colors.red : Colors.white,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 7),
-                                               Text(
-                                                 '${item.likes.length}',
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            ],
+                                          const Icon(
+                                            Icons.music_note,
+                                            size: 15,
+                                            color: Colors.white,
                                           ),
-
-
-
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {showCommentBottomDialog(context, item.id);},
-                                                child: const Icon(
-                                                  Icons.comment,
-                                                  size: 40,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-
-                                              const SizedBox(height: 7),
-
-                                              StreamBuilder<QuerySnapshot>(
-                                                stream: videos
-                                                    .doc(item.id)
-                                                    .collection('commentList')
-                                                    .snapshots(),
-                                                builder: (BuildContext context,
-                                                    AsyncSnapshot<QuerySnapshot>
-                                                    snapshot) {
-                                                  if (snapshot.hasError) {
-                                                    return const Text(
-                                                        'Something went wrong');
-                                                  }
-                                                  if (snapshot.hasData) {
-                                                    return Text(
-                                                      '${snapshot.data!.docs.length}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.white),
-                                                    );
-                                                  }
-                                                  return Container();
-                                                },
-                                              ),
-
-                                            ],
+                                          Text(
+                                            item.caption,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {},
-                                                child: const Icon(
-                                                  Icons.reply,
-                                                  size: 40,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 7),
-
-                                            ],
-                                          ),
-
                                         ],
-                                      ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 100,
+                                margin: EdgeInsets.only(top: size.height / 5),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    buildProfile(context, item.profilePhoto,
+                                        item.uid, item.uid),
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            VideoService.likeVideo(item.id);
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            size: 40,
+                                            color: snapshot
+                                                    .data!.docs[index]['likes']
+                                                    .contains(uid)
+                                                ? Colors.red
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 7),
+                                        Text(
+                                          '${item.likes.length}',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            showCommentBottomDialog(
+                                                context, item.id);
+                                          },
+                                          child: const Icon(
+                                            Icons.comment,
+                                            size: 40,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 7),
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: videos
+                                              .doc(item.id)
+                                              .collection('commentList')
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasError) {
+                                              return const Text(
+                                                  'Something went wrong');
+                                            }
+                                            if (snapshot.hasData) {
+                                              return Text(
+                                                '${snapshot.data!.docs.length}',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white),
+                                              );
+                                            }
+                                            return Container();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {},
+                                          child: const Icon(
+                                            Icons.reply,
+                                            size: 40,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 7),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      );
-                    },
-                  );
-
-              }),
-        );
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
+          }),
+    );
   }
 }

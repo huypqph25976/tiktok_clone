@@ -39,7 +39,7 @@ class _MainVideoScreenState extends State<MainVideoScreen> {
                             tabs: [
                               Tab(
                                 child: SizedBox(
-                                  width: 50,
+                                  width: 60,
                                   child: Text('Related'),
                                 ),
                               ),
