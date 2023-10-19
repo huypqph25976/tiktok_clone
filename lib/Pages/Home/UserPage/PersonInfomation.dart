@@ -240,8 +240,7 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const ChangePasswordScreen()));
+                                  builder: (context) => ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
