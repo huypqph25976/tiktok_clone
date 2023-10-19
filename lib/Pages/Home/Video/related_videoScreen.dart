@@ -20,22 +20,6 @@ class RelatedVideoScreen extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
 
-  Stream<QuerySnapshot> fetch() {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .snapshots()
-        .asyncMap((snapshot) async {
-      List<dynamic> list2 = snapshot.data()!['following'];
-      QuerySnapshot videoSnapshot = await FirebaseFirestore.instance
-          .collection('videos')
-          .where('uid', whereIn: list2)
-          .get();
-      return videoSnapshot;
-    });
-  }
-
-
   buildProfile(
       BuildContext context, String profilePhoto, String id, String videoUid) {
     return SizedBox(
@@ -624,12 +608,58 @@ class RelatedVideoScreen extends StatelessWidget {
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
+
+                                        child:  Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                           
+                                          Text(
+                                              '@ ${item.username}',
+                                              style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              ),
+                                              ),
+
+
+                                            Text(
+                                              item.songName,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                             Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.music_note,
+                                                  size: 15,
+                                                  color: Colors.white,
+                                                ),
+                                                Text(
+                                                  item.caption,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+
                                       ),
                                       Text(
                                         item.songName,
                                         style: const TextStyle(
                                           fontSize: 15,
                                           color: Colors.white,
+
                                         ),
                                       ),
                                       Row(

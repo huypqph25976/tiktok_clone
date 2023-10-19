@@ -14,6 +14,7 @@ import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
+import '../showflow/Showflowscreen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -55,6 +56,79 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         .where('uID', isEqualTo: currentUserID)
         .snapshots();
   }
+
+
+  showLogoutDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        contentPadding: const EdgeInsets.all(30),
+        children: [
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 25, color: Colors.red),
+                ),
+                Text(
+                  'Are you sure about that?',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SimpleDialogOption(
+                onPressed: () {
+                  AuthService.Logout(context: context);
+                },
+                child: const Row(
+                  children:  [
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(fontSize: 20, color: Colors.green),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Row(
+                  children:  [
+                    Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'No',
+                        style: TextStyle(fontSize: 20, color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +258,39 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           const SizedBox(
                             height: 4,
                           ),
+
+
+                         InkWell(
+                           onTap: (){
+                             Navigator.push(context,  MaterialPageRoute(
+                                 builder: (context) => ShowfoloweScreen()));
+
+                           },
+                           child:  Text(
+
+                             snapshot.data.get('following').length.toString(),
+                             style: const TextStyle(
+                                 color: Colors.black,
+                                 fontWeight: FontWeight.w500,
+                                 fontSize: 20),
+
+                           ),
+                         ),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                              Text(
+                                "Following",
+                                style: TextStyle(color: Colors.grey, fontSize: 12),
+
+                            ),
+                          )
+
+
                           Text(
                             snapshot.data.get('following').length.toString(),
                             style: const TextStyle(
@@ -195,6 +302,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             "Following",
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
+
                         ],
                       ),
                       const SizedBox(
@@ -206,6 +314,35 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           const SizedBox(
                             height: 4,
                           ),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            Text(
+                              snapshot.data.get('follower').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            Text(
+                              "Followed",
+                              style: TextStyle
+                                (color: Colors.grey, fontSize: 12),
+                            ),
+                            ),
+
+
                           Text(
                             snapshot.data.get('follower').length.toString(),
                             style: const TextStyle(
@@ -217,6 +354,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             "Followed",
                             style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
+
                         ],
                       ),
                       const SizedBox(
@@ -332,6 +470,17 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   const SizedBox(
                     height: 8,
                   ),
+
+
+
+                  Text(
+                    snapshot.data.get('bio'),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17),
+                  ),
+
+
                   Container(
                     child: TabBar(
                       indicatorColor: Colors.black,
