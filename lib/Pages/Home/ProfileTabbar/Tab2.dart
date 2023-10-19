@@ -79,15 +79,15 @@ class Tab2 extends StatelessWidget {
                                   builder: (BuildContext context) {
                                     print(item['thumbnail']);
                                     return DialogWidget(
-                                      label: 'Log out',
-                                      content: 'Log out your account?',
+                                      label: 'Delete video',
+                                      content: 'You need delete this video?',
                                       onPressed: () {
-                                        Navigator.of(context).pop();
                                         StorageService.deleteVideo(
                                             context,
                                             item['id'],
                                             item['videoUrl'],
                                             item['thumbnail']);
+                                       
                                       },
                                     );
                                   },
