@@ -57,4 +57,9 @@ class VideoService{
         .doc(commentId)
         .update({'content': content});
   }
+
+  static deleteComment(String videoID, String commentId) async{
+
+    return await FirebaseFirestore.instance.collection('videos').doc(videoID).collection('commentList').doc(commentId).delete();
+  }
 }

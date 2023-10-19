@@ -71,6 +71,8 @@ class RelatedVideoScreen extends StatelessWidget {
             ),
           ),
         ),
+
+        // following screen
         StreamBuilder(
             stream: users.doc(uid).snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {

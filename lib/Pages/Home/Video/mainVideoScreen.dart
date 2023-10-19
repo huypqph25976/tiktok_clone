@@ -14,28 +14,44 @@ class _MainVideoScreenState extends State<MainVideoScreen> {
 
     @override
     Widget build(BuildContext context) {
-      return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              bottom: const TabBar(
-                indicatorColor: Colors.white,
-                tabs: [
-                  Tab(child: Text("Related Video", style: TextStyle(fontSize: 20),)),
-                  Tab(child: Text("Following Video", style: TextStyle(fontSize: 20),)),
-                ],
+      return SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(color: Colors.black),
+                        child: const TabBar(
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.white,
+                          tabs: [
+                            Tab(child: Text("Related", style: TextStyle(fontSize: 20),) ),
+                            Tab(
+                                child: Text("Following", style: TextStyle(fontSize: 20),)
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            RelatedVideoScreen(),
+                            FollowingVideoScreen(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            body: TabBarView(
-              children: [
-                RelatedVideoScreen(),
-                const FollowingVideoScreen(),
-
-              ],
-            ),
-
+            ],
           ),
+        ),
       );
     }
 }
