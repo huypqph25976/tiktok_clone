@@ -22,7 +22,7 @@ class _MainVideoScreenState extends State<MainVideoScreen> {
           children: [
             Expanded(
               child: DefaultTabController(
-                length: 3,
+                length: 2,
                 child: Column(
                   children: [
                     Container(
@@ -78,7 +78,7 @@ class _MainVideoScreenState extends State<MainVideoScreen> {
                       child: TabBarView(
                         children: [
                           RelatedVideoScreen(),
-                          const FollowingVideoScreen(),
+                          FollowingVideoScreen(),
                         ],
                       ),
                     ),
