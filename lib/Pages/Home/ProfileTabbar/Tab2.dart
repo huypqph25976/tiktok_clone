@@ -27,11 +27,12 @@ class Tab2 extends StatelessWidget {
             );
           }
 
+
           return  GridView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 2/3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 2/3, crossAxisSpacing: 1, mainAxisSpacing: 1),
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) {
                         final item = snapshot.data!.docs[index];

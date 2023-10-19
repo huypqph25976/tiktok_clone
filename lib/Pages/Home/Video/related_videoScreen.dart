@@ -433,14 +433,25 @@ class RelatedVideoScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
+                                            // InkWell(
+                                            //   onTap: (){
+                                            //
+                                            //     Navigator.push(
+                                            //         context,
+                                            //         MaterialPageRoute(
+                                            //         builder: (context) => PersonInformation(personID: id)),
+                                            //   },
+                                            //   child:
+                                          Text(
                                               '@ ${item.username}',
                                               style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
                                               ),
-                                            ),
+                                              ),
+
+
                                             Text(
                                               item.songName,
                                               style: const TextStyle(

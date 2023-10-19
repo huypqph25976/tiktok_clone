@@ -12,6 +12,7 @@ import 'package:tiktok_clone2/Services/authServices.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 
 import '../ProfileTabbar/Tab3.dart';
+import '../showflow/Showflowscreen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -122,6 +123,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -249,18 +251,36 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                             height: 4,
                           ),
 
-                          Text(
-                            snapshot.data.get('following').length.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20),
+                         InkWell(
+                           onTap: (){
+                             Navigator.push(context,  MaterialPageRoute(
+                                 builder: (context) => ShowfoloweScreen()));
 
-                          ),
-                          Text(
-                            "Following",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
+                           },
+                           child:  Text(
+
+                             snapshot.data.get('following').length.toString(),
+                             style: const TextStyle(
+                                 color: Colors.black,
+                                 fontWeight: FontWeight.w500,
+                                 fontSize: 20),
+
+                           ),
+                         ),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                              Text(
+                                "Following",
+                                style: TextStyle(color: Colors.grey, fontSize: 12),
+
+                            ),
+                          )
+
                         ],
                       ),
                       const SizedBox(
@@ -272,19 +292,33 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           const SizedBox(
                             height: 4,
                           ),
-
-                          Text(
-                            snapshot.data.get('follower').length.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            Text(
+                              snapshot.data.get('follower').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
                           ),
-                          Text(
-                            "Followed",
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            Text(
+                              "Followed",
                               style: TextStyle
                                 (color: Colors.grey, fontSize: 12),
-                          ),
+                            ),
+                            ),
+
                         ],
                       ),
                       const SizedBox(
@@ -409,11 +443,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                         color: Colors.black,
                         fontSize: 17),
                   ),
-
-
-
-
-
 
                   Container(
                     child: TabBar(
