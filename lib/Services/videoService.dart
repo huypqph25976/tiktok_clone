@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class VideoService{
   static likeVideo(String id) async {
@@ -49,12 +48,17 @@ class VideoService{
 
   static checkLike(String id) {}
 
-  static updateComment(String videoID, String commentId, String content) async{
+  static updateComment(String videoID, String commentId, String comment) async{
     return await FirebaseFirestore.instance
         .collection('videos')
         .doc(videoID)
         .collection('commentList')
         .doc(commentId)
-        .update({'content': content});
+        .update({'content': comment});
+  }
+
+  static deleteComment(String videoID, String commentId) async{
+
+    return await FirebaseFirestore.instance.collection('videos').doc(videoID).collection('commentList').doc(commentId).delete();
   }
 }

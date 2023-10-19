@@ -5,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+
 import 'package:tiktok_clone2/Services/storageService.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
-import 'package:tiktok_clone2/Widgets/customText.dart';
+
 
 class UserEditScreen extends StatelessWidget {
   UserEditScreen({Key? key}) : super(key: key);

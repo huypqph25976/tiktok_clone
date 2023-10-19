@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoForm.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
+import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
 import '../showflow/Showflowscreen.dart';
@@ -21,7 +23,8 @@ class UserProfileScreen extends StatefulWidget {
   State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> with TickerProviderStateMixin {
+class _UserProfileScreenState extends State<UserProfileScreen>
+    with TickerProviderStateMixin {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
   getVideoScreen(ImageSource source, BuildContext context) async {
     final videoFile = await ImagePicker().pickVideo(source: source);
@@ -53,6 +56,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
         .where('uID', isEqualTo: currentUserID)
         .snapshots();
   }
+
 
   showLogoutDialog(BuildContext context) {
     return showDialog(
@@ -125,6 +129,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
@@ -143,22 +148,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
               child: Column(
                 children: [
                   const SizedBox(
-
                     height: 20,
                   ),
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
-                      const SizedBox(width: 150,),
+                      const SizedBox(
+                        width: 150,
+                      ),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-
-                            Text(
+                            const Text(
                               "Profile",
                               style: TextStyle(
                                 fontSize: 20,
@@ -166,12 +171,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 90,),
-
+                            const SizedBox(
+                              width: 90,
+                            ),
                             ElevatedButton(
-
                               onPressed: () {
-                                showLogoutDialog(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DialogWidget(
+                                          label: 'Your Label',
+                                          content: 'Your Content',
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            AuthService.Logout(
+                                                context: context);
+                                          });
+                                    });
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white),
@@ -187,19 +203,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 ),
                               ),
                             ),
-
-
                           ],
                         ),
-
-
                       ),
-
-
                     ],
                   ),
-
-
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 100,
@@ -216,7 +224,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                               if (snapshot.hasError) {
                                 return const Text("error");
                               }
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               }
@@ -243,13 +252,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-
                     children: [
                       Column(
                         children: [
                           const SizedBox(
                             height: 4,
                           ),
+
 
                          InkWell(
                            onTap: (){
@@ -281,6 +290,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                             ),
                           )
 
+
+                          Text(
+                            snapshot.data.get('following').length.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          const Text(
+                            "Following",
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+
                         ],
                       ),
                       const SizedBox(
@@ -292,6 +314,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           const SizedBox(
                             height: 4,
                           ),
+
                           InkWell(
                             onTap: (){
                               Navigator.push(context,  MaterialPageRoute(
@@ -319,6 +342,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                             ),
                             ),
 
+
+                          Text(
+                            snapshot.data.get('follower').length.toString(),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          ),
+                          const Text(
+                            "Followed",
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+
                         ],
                       ),
                       const SizedBox(
@@ -330,7 +366,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                           const SizedBox(
                             height: 4,
                           ),
-
                           Text(
                             snapshot.data.get('follower').length.toString(),
                             style: const TextStyle(
@@ -338,24 +373,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 fontWeight: FontWeight.w500,
                                 fontSize: 20),
                           ),
-                          Text(
+                          const Text(
                             "Like",
-                            style: TextStyle
-                              (color: Colors.grey, fontSize: 12),
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
                           ),
                         ],
                       ),
                     ],
                   ),
-
-
-
-
-                  SizedBox(height: 15),
-
-
-
-
+                  const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -369,14 +395,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
                         child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           child: Row(
                             children: [
                               Text(
                                 "Setting Profile",
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.black,fontWeight: FontWeight.normal),
-
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal),
                               )
                             ],
                           ),
@@ -385,16 +413,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                       const SizedBox(
                         width: 8,
                       ),
-
                       ElevatedButton(
-
                         onPressed: () {
                           getVideoScreen(ImageSource.gallery, context);
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                          backgroundColor: Colors.white,
                         ),
-
                         child: const Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Row(
@@ -403,18 +428,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                                 Icons.camera_alt,
                                 color: Colors.black,
                               )
-
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       ElevatedButton(
-
                         onPressed: () {
-                          showLogoutDialog(context);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogWidget(
+                                label: 'Log out',
+                                content: 'Log out your account?',
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  AuthService.Logout(context: context);
+                                },
+                              );
+                            },
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -437,12 +472,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   ),
 
 
+
                   Text(
                     snapshot.data.get('bio'),
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 17),
                   ),
+
 
                   Container(
                     child: TabBar(
@@ -473,16 +510,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-                   Container(
-                     height: MediaQuery.of(context).size.height,
-                     width: MediaQuery.of(context).size.width,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
                     child: TabBarView(
                       controller: tabController,
                       children: const [
                         Tab2(),
                         Tab1(),
                         Tab3(),
-
                       ],
                     ),
                   ),
