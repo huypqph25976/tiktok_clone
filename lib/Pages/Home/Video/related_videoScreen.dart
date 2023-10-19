@@ -15,25 +15,9 @@ class RelatedVideoScreen extends StatelessWidget {
 
   String? uid = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference videos = FirebaseFirestore.instance.collection('videos');
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
-
-  Stream<QuerySnapshot> fetch() {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .snapshots()
-        .asyncMap((snapshot) async {
-      List<dynamic> list2 = snapshot.data()!['following'];
-      QuerySnapshot videoSnapshot = await FirebaseFirestore.instance
-          .collection('videos')
-          .where('uid', whereIn: list2)
-          .get();
-      return videoSnapshot;
-    });
-  }
 
 
   buildProfile(
@@ -185,6 +169,8 @@ class RelatedVideoScreen extends StatelessWidget {
                                 onTapDown: (TapDownDetails details) {
                                   tapDownPosition = details.globalPosition;
                                 },
+
+
                                 onLongPress: () {
                                   showMenu(context: context,
                                       position: RelativeRect.fromRect(
@@ -194,6 +180,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                               overlay!.paintBounds.size.width,
                                               overlay.paintBounds.size.height)),
                                       items: [
+
                                         PopupMenuItem(
                                           value: 'update',
                                           child: const Text('Sửa bình luận'),
@@ -330,10 +317,13 @@ class RelatedVideoScreen extends StatelessWidget {
                                                         children: [
                                                           SimpleDialogOption(
                                                             onPressed: () {
-                                                              VideoService
-                                                                  .deleteComment(
-                                                                  videoID,
-                                                                  item['id']);
+                                                                VideoService
+                                                                    .deleteComment(
+                                                                    videoID,
+                                                                    item['id']);
+
+
+
                                                             },
                                                             child: const Row(
                                                               children: [
@@ -524,7 +514,6 @@ class RelatedVideoScreen extends StatelessWidget {
           ],
         ),
       );
-      //_scaffoldKey.currentState.showBottomSheet((context) => null);
       showModalBottomSheet<void>(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
