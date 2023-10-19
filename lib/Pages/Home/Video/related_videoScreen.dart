@@ -1,7 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
@@ -15,15 +14,17 @@ class RelatedVideoScreen extends StatelessWidget {
   RelatedVideoScreen({Key? key}) : super(key: key);
 
   String? uid = FirebaseAuth.instance.currentUser?.uid;
-  CollectionReference videos = FirebaseFirestore.instance.collection('videos');
-  final CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final CollectionReference videos =
+      FirebaseFirestore.instance.collection('videos');
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
+  final CollectionReference comment =
+      FirebaseFirestore.instance.collection('commentList');
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
 
   TextEditingController textEditingController = TextEditingController();
   TextEditingController textEditingController2 = TextEditingController();
-
-
 
   buildProfile(
       BuildContext context, String profilePhoto, String id, String videoUid) {
@@ -103,14 +104,11 @@ class RelatedVideoScreen extends StatelessWidget {
 
   showCommentBottomDialog(BuildContext context, String videoID) {
     final RenderObject? overlay =
-    Overlay.of(context).context.findRenderObject();
+        Overlay.of(context).context.findRenderObject();
     Offset tapDownPosition = Offset.zero;
 
     final page2 = SizedBox(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 3 / 4,
+      height: MediaQuery.of(context).size.height * 3 / 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -173,14 +171,15 @@ class RelatedVideoScreen extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             final item = snapshot.data!.docs[index];
 
+                            comment.where(item['uID'], isEqualTo: uid);
+
                             return GestureDetector(
                               onTapDown: (TapDownDetails details) {
                                 tapDownPosition = details.globalPosition;
                               },
-
-
                               onLongPress: () {
-                                showMenu(context: context,
+                                showMenu(
+                                    context: context,
                                     position: RelativeRect.fromRect(
                                         Rect.fromLTWH(tapDownPosition.dx,
                                             tapDownPosition.dy, 30, 30),
@@ -214,15 +213,20 @@ class RelatedVideoScreen extends StatelessWidget {
                                                                 color: Colors
                                                                     .red),
                                                           ),
-                                                          TextFormField(
-                                                            controller: textEditingController2,
-                                                            keyboardType: TextInputType.text,
-                                                            decoration: const InputDecoration(
-                                                              contentPadding: EdgeInsets.symmetric(vertical: 15.0),
-
-                                                            ),
-
-                                                          ),
+                                                          TextField(
+                                                        controller:
+                                                            textEditingController2,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          contentPadding:
+                                                              EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          15.0),
+                                                        ),
+                                                      ),
                                                         ],
                                                       ),
                                                     ),
@@ -232,11 +236,21 @@ class RelatedVideoScreen extends StatelessWidget {
                                                       children: [
                                                         SimpleDialogOption(
                                                           onPressed: () {
-                                                            VideoService.updateComment(videoID, item['id'], textEditingController2.text);
-                                                            Navigator.of(
-                                                                context)
-                                                                .pop();
-                                                          },
+                                                        if (textEditingController2
+                                                                .text == '') {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        }
+                                                          VideoService
+                                                              .updateComment(
+                                                                  videoID,
+                                                                  item['id'],
+                                                                  textEditingController2
+                                                                      .text);
+                                                        Navigator.of(context)
+                                                            .pop();
+
+                                                      },
                                                           child: const Row(
                                                             children: [
                                                               Icon(
