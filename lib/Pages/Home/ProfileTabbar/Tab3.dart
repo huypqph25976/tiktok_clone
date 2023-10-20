@@ -27,7 +27,7 @@ class Tab3 extends StatelessWidget {
               .doc(uid)
               .snapshots(),
           builder: (BuildContext context, snapshot) {
-            print(snapshot.data!['bookmark'][0].toString());
+
             if (snapshot.hasError) {
               return const Text('Something went wrong');
             }

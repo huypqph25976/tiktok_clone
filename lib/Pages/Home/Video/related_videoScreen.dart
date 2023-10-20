@@ -572,13 +572,10 @@ class RelatedVideoScreen extends StatelessWidget {
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 final Video item = Video.fromSnap(snapshot.data!.docs[index]);
-                // isVideoBookmarked() async {
+
                 final userDoc = users.doc(uid).get();
                 print('$userDoc--------------------------------');
-                // final bookmarks = userDoc['bookmark'] as List<dynamic>?;
 
-                // return bookmarks!.contains(snapshot.data!.docs[index]['id']);
-                // }
 
                 return Stack(
                   children: [
@@ -729,7 +726,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                             color: snapshot
                                                     .data!.docs[index]['id']
                                                     .contains(uid)
-                                                ? Colors.yellow
+                                                ? Colors.red
                                                 : Colors.white,
                                           ),
                                         ),
