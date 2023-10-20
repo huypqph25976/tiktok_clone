@@ -291,22 +291,26 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             },
                             child:
 
-                              Text(
+
                               const Text(
                                 "Following",
                                 style: TextStyle(color: Colors.grey, fontSize: 12),
 
-                            ),
+
                           ),
 
 
 
 
-                        ],
+                          ) ],
+
                       ),
                       const SizedBox(
                         width: 40,
                       ),
+
+
+
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -335,18 +339,14 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             },
                             child:
 
-                            Text(
+
 
                             const Text(
                               "Followed",
                               style: TextStyle
                                 (color: Colors.grey, fontSize: 12),
                             ),
-                            ),
-
-
-
-                        ],
+                          )],
                       ),
                       const SizedBox(
                         width: 50,

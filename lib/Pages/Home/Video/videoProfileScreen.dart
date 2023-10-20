@@ -727,6 +727,26 @@ class VideoProfileScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
+
+                                      Column(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              final path = item.videoUrl;
+                                              Share.share(path);
+                                            },
+                                            child: const Icon(
+                                              Icons.bookmark,
+                                              size: 25,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 7,
+                                          ),
+                                        ],
+                                      ),
+
                                       Column(
                                         children: [
                                           InkWell(

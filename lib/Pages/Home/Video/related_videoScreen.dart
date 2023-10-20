@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
@@ -86,7 +83,7 @@ class RelatedVideoScreen extends StatelessWidget {
                   duration: const Duration(milliseconds: 300),
                   child: InkWell(
                     onTap: () async {
-if (!isFollowing) {
+                      if (!isFollowing) {
                         await UserService.follow(
                             videoUid); // Function to follow a user
                       }
@@ -166,7 +163,7 @@ if (!isFollowing) {
                     child: Container(),
                   );
                 }
-if (snapshot.hasData) {
+                if (snapshot.hasData) {
                   return Column(
                     children: [
                       Expanded(
@@ -215,7 +212,7 @@ if (snapshot.hasData) {
                                                             fontSize: 25,
                                                             color: Colors.red),
                                                       ),
-Text(
+                                                      Text(
                                                         'Are you sure about that?',
                                                         style: TextStyle(
                                                             fontSize: 20),
@@ -259,7 +256,7 @@ Text(
                                                           Icon(
                                                             Icons.cancel,
                                                             color: Colors.red,
-),
+                                                          ),
                                                           Padding(
                                                             padding:
                                                                 EdgeInsets.all(
@@ -306,7 +303,7 @@ Text(
                                                         style: TextStyle(
                                                             fontSize: 25,
                                                             color: Colors.red),
-),
+                                                      ),
                                                       Text(
                                                         'Are you sure about that?',
                                                         style: TextStyle(
@@ -349,7 +346,8 @@ Text(
                                                     ),
                                                     SimpleDialogOption(
                                                       onPressed: () =>
-                                                          Navigator.of(context).pop(),
+                                                          Navigator.of(context)
+                                                              .pop(),
                                                       child: const Row(
                                                         children: [
                                                           Icon(
@@ -400,7 +398,7 @@ Text(
                                         const SizedBox(
                                           width: 10,
                                         ),
-Column(
+                                        Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -449,7 +447,7 @@ Column(
                                                       videoID, item['id']);
                                                 },
                                                 child: Icon(
-Icons.favorite,
+                                                  Icons.favorite,
                                                   color: snapshot.data!
                                                           .docs[index]['likes']
                                                           .contains(uid)
@@ -533,7 +531,7 @@ Icons.favorite,
     final String username = result.get('username');
     var allDocs = await FirebaseFirestore.instance
         .collection('videos')
-.doc(videoID)
+        .doc(videoID)
         .collection('commentList')
         .get();
     int len = allDocs.docs.length;
@@ -608,7 +606,7 @@ Icons.favorite,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-Text(
+                                      Text(
                                         '@ ${item.username}',
                                         style: const TextStyle(
                                           fontSize: 20,
@@ -664,7 +662,7 @@ Text(
                                             size: 40,
                                             color: snapshot
                                                     .data!.docs[index]['likes']
-.contains(uid)
+                                                    .contains(uid)
                                                 ? Colors.red
                                                 : Colors.white,
                                           ),
@@ -716,7 +714,7 @@ Text(
                                             return Container();
                                           },
                                         ),
-],
+                                      ],
                                     ),
                                     Column(
                                       children: [
@@ -741,9 +739,9 @@ Text(
                                         InkWell(
                                           onTap: () {},
                                           child: const Icon(
-                                            Icons.reply,
+                                            Icons.share,
                                             size: 40,
-                                            color: Colors.red,
+                                            color: Colors.white,
                                           ),
                                         ),
                                         const SizedBox(height: 7),

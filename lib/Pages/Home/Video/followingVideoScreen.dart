@@ -746,6 +746,26 @@ class FollowingVideoScreen extends StatelessWidget {
 
                                        ],
                                      ),
+
+                                     Column(
+                                       children: [
+                                         InkWell(
+                                           onTap: () {
+                                             VideoService.bookmarkVideo(item.id);
+                                           },
+                                           child: Icon(
+                                             Icons.bookmark,
+                                             size: 40,
+                                             color: snapshot
+                                                 .data!.docs[index]['id']
+                                                 .contains(uid)
+                                                 ? Colors.yellow
+                                                 : Colors.white,
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                     
                                      Column(
                                        children: [
                                          InkWell(
