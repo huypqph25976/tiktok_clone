@@ -20,20 +20,10 @@ class RelatedVideoScreen extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> list = [''];
 
-  Stream<QuerySnapshot> fetch() {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .snapshots()
-        .asyncMap((snapshot) async {
-      List<dynamic> list2 = snapshot.data()!['following'];
-      QuerySnapshot videoSnapshot = await FirebaseFirestore.instance
-          .collection('videos')
-          .where('uid', whereIn: list2)
-          .get();
-      return videoSnapshot;
-    });
-  }
+  final TextEditingController textEditingController2 = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
+
+
 
   buildProfile(
       BuildContext context, String profilePhoto, String id, String videoUid) {
@@ -110,9 +100,8 @@ class RelatedVideoScreen extends StatelessWidget {
   }
 
   showCommentBottomDialog(BuildContext context, String videoID) {
-    final TextEditingController textEditingController = TextEditingController();
-    final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
+
+    final RenderObject? overlay = Overlay.of(context).context.findRenderObject();
     Offset tapDownPosition = Offset.zero;
 
     final page2 = SizedBox(
@@ -128,8 +117,7 @@ class RelatedVideoScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StreamBuilder<QuerySnapshot>(
-                stream:
-                    videos.doc(videoID).collection('commentList').snapshots(),
+                stream: videos.doc(videoID).collection('commentList').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
@@ -164,6 +152,7 @@ class RelatedVideoScreen extends StatelessWidget {
                     child: Container(),
                   );
                 }
+
                 if (snapshot.hasData) {
                   return Column(
                     children: [
@@ -182,198 +171,234 @@ class RelatedVideoScreen extends StatelessWidget {
                                     position: RelativeRect.fromRect(
                                         Rect.fromLTWH(tapDownPosition.dx,
                                             tapDownPosition.dy, 30, 30),
-                                        Rect.fromLTWH(
-                                            0,
-                                            0,
+                                        Rect.fromLTWH(0, 0,
                                             overlay!.paintBounds.size.width,
                                             overlay.paintBounds.size.height)),
                                     items: [
+
                                       PopupMenuItem(
                                         value: 'update',
                                         child: const Text('Sửa bình luận'),
                                         onTap: () async {
                                           showDialog(
                                             context: context,
-                                            builder: (context) => SimpleDialog(
-                                              contentPadding:
-                                                  const EdgeInsets.all(30),
-                                              children: [
-                                                const Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        'Logout',
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            color: Colors.red),
-                                                      ),
-                                                      Text(
-                                                        'Are you sure about that?',
-                                                        style: TextStyle(
-                                                            fontSize: 20),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                            builder: (context) =>
+                                                SimpleDialog(
+                                                  contentPadding: const EdgeInsets
+                                                      .all(30),
                                                   children: [
-                                                    SimpleDialogOption(
-                                                      onPressed: () {},
-                                                      child: const Row(
+                                                    Center(
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .center,
+                                                        crossAxisAlignment: CrossAxisAlignment
+                                                            .center,
                                                         children: [
-                                                          Icon(
-                                                            Icons.done,
-                                                            color: Colors.green,
+                                                          const Text(
+                                                            'Sửa bình luận',
+                                                            style: TextStyle(
+                                                                fontSize: 25,
+                                                                color: Colors
+                                                                    .red),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Text(
-                                                              'Yes',
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .green),
+                                                          TextField(
+                                                            controller:
+                                                            textEditingController2,
+                                                            keyboardType:
+                                                            TextInputType.text,
+                                                            decoration:
+                                                            const InputDecoration(
+                                                              contentPadding:
+                                                              EdgeInsets
+                                                                  .symmetric(
+                                                                  vertical:
+                                                                  15.0),
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                    SimpleDialogOption(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(),
-                                                      child: const Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.cancel,
-                                                            color: Colors.red,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        SimpleDialogOption(
+                                                          onPressed: () {
+                                                            if (textEditingController2
+                                                                .text == '') {
+                                                              Navigator.of(context)
+                                                                  .pop();
+                                                            }
+                                                            VideoService
+                                                                .updateComment(
+                                                                videoID,
+                                                                item['id'],
+                                                                textEditingController2
+                                                                    .text);
+                                                            Navigator.of(context)
+                                                                .pop();
+
+                                                          },
+                                                          child: const Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.done,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(
                                                                     10.0),
-                                                            child: Text(
-                                                              'No',
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .red),
-                                                            ),
+                                                                child: Text(
+                                                                  'Yes',
+                                                                  style: TextStyle(
+                                                                      fontSize: 20,
+                                                                      color: Colors
+                                                                          .green),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                        SimpleDialogOption(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                  context)
+                                                                  .pop(),
+                                                          child: const Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.cancel,
+                                                                color: Colors
+                                                                    .red,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(
+                                                                    10.0),
+                                                                child: Text(
+                                                                  'No',
+                                                                  style: TextStyle(
+                                                                      fontSize: 20,
+                                                                      color: Colors
+                                                                          .red),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
                                           );
                                         },
                                       ),
+
+
                                       PopupMenuItem(
                                         value: 'delete',
                                         child: const Text('Xóa bình luận'),
                                         onTap: () async {
                                           showDialog(
                                             context: context,
-                                            builder: (context) => SimpleDialog(
-                                              contentPadding:
-                                                  const EdgeInsets.all(30),
-                                              children: [
-                                                const Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        'Xóa bình luận',
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            color: Colors.red),
-                                                      ),
-                                                      Text(
-                                                        'Are you sure about that?',
-                                                        style: TextStyle(
-                                                            fontSize: 20),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                            builder: (context) =>
+                                                SimpleDialog(
+                                                  contentPadding: const EdgeInsets
+                                                      .all(30),
                                                   children: [
-                                                    SimpleDialogOption(
-                                                      onPressed: () {
-                                                        VideoService
-                                                            .deleteComment(
-                                                                videoID,
-                                                                item['id']);
-                                                      },
-                                                      child: const Row(
+                                                    const Center(
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .center,
+                                                        crossAxisAlignment: CrossAxisAlignment
+                                                            .center,
                                                         children: [
-                                                          Icon(
-                                                            Icons.done,
-                                                            color: Colors.green,
+                                                          Text(
+                                                            'Xóa bình luận',
+                                                            style: TextStyle(
+                                                                fontSize: 25,
+                                                                color: Colors
+                                                                    .red),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Text(
-                                                              'Yes',
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .green),
-                                                            ),
+                                                          Text(
+                                                            'Are you sure about that?',
+                                                            style: TextStyle(
+                                                                fontSize: 20),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                    SimpleDialogOption(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(),
-                                                      child: const Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.cancel,
-                                                            color: Colors.red,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        SimpleDialogOption(
+                                                          onPressed: () {
+                                                            VideoService
+                                                                .deleteComment(
+                                                                videoID,
+                                                                item['id']);
+
+                                                            Navigator.of(
+                                                                context)
+                                                                .pop();
+
+                                                          },
+                                                          child: const Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.done,
+                                                                color: Colors
+                                                                    .green,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(
                                                                     10.0),
-                                                            child: Text(
-                                                              'No',
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors
-                                                                      .red),
-                                                            ),
+                                                                child: Text(
+                                                                  'Yes',
+                                                                  style: TextStyle(
+                                                                      fontSize: 20,
+                                                                      color: Colors
+                                                                          .green),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                        SimpleDialogOption(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                  context)
+                                                                  .pop(),
+                                                          child: const Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.cancel,
+                                                                color: Colors
+                                                                    .red,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(
+                                                                    10.0),
+                                                                child: Text(
+                                                                  'No',
+                                                                  style: TextStyle(
+                                                                      fontSize: 20,
+                                                                      color: Colors
+                                                                          .red),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
                                           );
                                         },
                                       ),
@@ -388,9 +413,9 @@ class RelatedVideoScreen extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         CircleAvatar(
                                           backgroundImage: NetworkImage(
@@ -401,7 +426,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${item['username']}',
@@ -410,9 +435,10 @@ class RelatedVideoScreen extends StatelessWidget {
                                                   color: Colors.black38),
                                             ),
                                             SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width *
                                                   3 /
                                                   4,
                                               child: Text(
@@ -427,9 +453,9 @@ class RelatedVideoScreen extends StatelessWidget {
                                               item['createdOn'] == null
                                                   ? DateTime.now().toString()
                                                   : DateFormat.yMMMd()
-                                                      .add_jm()
-                                                      .format(item['createdOn']
-                                                          .toDate()),
+                                                  .add_jm()
+                                                  .format(item['createdOn']
+                                                  .toDate()),
                                               style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black38),
@@ -439,7 +465,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         const Spacer(),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(right: 8.0),
+                                          const EdgeInsets.only(right: 8.0),
                                           child: Column(
                                             children: [
                                               InkWell(
@@ -450,8 +476,8 @@ class RelatedVideoScreen extends StatelessWidget {
                                                 child: Icon(
                                                   Icons.favorite,
                                                   color: snapshot.data!
-                                                          .docs[index]['likes']
-                                                          .contains(uid)
+                                                      .docs[index]['likes']
+                                                      .contains(uid)
                                                       ? Colors.red
                                                       : Colors.grey,
                                                 ),
