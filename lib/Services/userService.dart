@@ -10,7 +10,7 @@ class UserService {
   //Get userInfo from firestore cloud
   static Future getUserInfo() async {
     final CollectionReference users =
-    FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('users');
     const storage = FlutterSecureStorage();
     String? UID = await storage.read(key: 'uID');
     final result = await users.doc(UID).get();
@@ -20,12 +20,11 @@ class UserService {
 
   static Stream getPerson(String personID) {
     final CollectionReference users =
-    FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('users');
     final result = users.doc(personID).snapshots();
 
     return result;
   }
-
 
   static addUser({
     required String? UID,
@@ -34,48 +33,48 @@ class UserService {
   }) {
     // Call the user's CollectionReference to add a new user
     try {
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
       users
           .doc(UID)
           .set({
-        'uID': UID,
-        'username': username,
-        'email': email,
-        'following': [],
-        'follower': [],
-        'avartarURL': 'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
-        'phone': 'None',
-        'bio':'Bio not yet'
-
-      })
+            'uID': UID,
+            'username': username,
+            'email': email,
+            'following': [],
+            'follower': [],
+            'avartarURL':
+                'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
+            'phone': 'None',
+            'bio': 'Bio not yet'
+          })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
     } catch (e) {}
   }
 
-
   static editUserFetch(
       {required BuildContext context,
-        required phone,
-        required bio,
-        required username}) async {
+      required phone,
+      required bio,
+      required username}) async {
     try {
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
-      final storage = const FlutterSecureStorage();
-      String? UID = await storage.read(key: 'uID');
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      const storage = FlutterSecureStorage();
+      String? UID = await storage.read(key: 'UID');
       users
           .doc(UID)
           .update({
-        'username': username,
-        'phone': phone,
-        'bio' : bio,
-
-      })
+            'username': username,
+            'phone': phone,
+            'bio': bio,
+          })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => UserProfileScreen()),
+        MaterialPageRoute(builder: (context) => const UserProfileScreen()),
       );
       getSnackBar(
         'Edit Info',
@@ -95,14 +94,15 @@ class UserService {
   static editUserImage(
       {required BuildContext context, required ImageStorageLink}) async {
     try {
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
-      final storage = const FlutterSecureStorage();
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      const storage = FlutterSecureStorage();
       String? UID = await storage.read(key: 'uID');
       users
           .doc(UID)
           .update({
-        'avartarURL': ImageStorageLink,
-      })
+            'avartarURL': ImageStorageLink,
+          })
           .then((value) => print("User's Image Updated"))
           .catchError((error) => print("Failed to update user: $error"));
       return false;
@@ -116,7 +116,6 @@ class UserService {
   }
 
   static Future<void> follow(String uid) async {
-
     String currentUid = FirebaseAuth.instance.currentUser!.uid;
 
     DocumentSnapshot doc = await FirebaseFirestore.instance
@@ -146,6 +145,4 @@ class UserService {
       });
     }
   }
-
-
 }
