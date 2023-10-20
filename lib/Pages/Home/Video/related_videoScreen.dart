@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
 
 import '../../../Models/Video.dart';
@@ -737,7 +738,10 @@ class RelatedVideoScreen extends StatelessWidget {
                                     Column(
                                       children: [
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            final path = item.videoUrl;
+                                            Share.share(path);
+                                          },
                                           child: const Icon(
                                             Icons.share,
                                             size: 40,

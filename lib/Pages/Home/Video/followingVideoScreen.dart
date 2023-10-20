@@ -765,7 +765,7 @@ class FollowingVideoScreen extends StatelessWidget {
                                          ),
                                        ],
                                      ),
-                                     
+
                                      Column(
                                        children: [
                                          InkWell(
