@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
+import 'package:tiktok_clone2/Pages/Home/UserPage/editProfileScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoForm.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
@@ -252,7 +253,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UserEditScreen()));
+                                  builder: (context) =>
+                                      const EditProfileScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
