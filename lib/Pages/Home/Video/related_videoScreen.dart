@@ -349,8 +349,7 @@ Text(
                                                     ),
                                                     SimpleDialogOption(
                                                       onPressed: () =>
-                                                          Navigator.of(context)
-.pop(),
+                                                          Navigator.of(context).pop(),
                                                       child: const Row(
                                                         children: [
                                                           Icon(

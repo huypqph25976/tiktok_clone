@@ -15,8 +15,13 @@ import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
+
+import '../showflow/Following.dart';
+import '../showflow/Showflowscreen.dart';
+
 import '../showflow/Showflowscreen.dart';
 import 'changePasswordScreen.dart';
+
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -285,6 +290,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   builder: (context) => ShowfoloweScreen()));
                             },
                             child:
+
+                              Text(
                               const Text(
                                 "Following",
                                 style: TextStyle(color: Colors.grey, fontSize: 12),
@@ -327,6 +334,9 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   builder: (context) => ShowfoloweScreen()));
                             },
                             child:
+
+                            Text(
+
                             const Text(
                               "Followed",
                               style: TextStyle
