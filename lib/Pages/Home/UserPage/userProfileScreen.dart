@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
+import 'package:tiktok_clone2/Pages/Home/UserPage/editProfileScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoForm.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
@@ -14,8 +15,13 @@ import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
+
 import '../showflow/Following.dart';
 import '../showflow/Showflowscreen.dart';
+
+import '../showflow/Showflowscreen.dart';
+import 'changePasswordScreen.dart';
+
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -181,8 +187,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     context: context,
                                     builder: (BuildContext context) {
                                       return DialogWidget(
-                                          label: 'Your Label',
-                                          content: 'Your Content',
+                                          label: 'Logout',
+                                          content: 'Are you sure bout that?',
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                             AuthService.Logout(
@@ -268,6 +274,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
                            },
                            child:  Text(
+
                              snapshot.data.get('following').length.toString(),
                              style: const TextStyle(
                                  color: Colors.black,
@@ -283,12 +290,18 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   builder: (context) => ShowfoloweScreen()));
                             },
                             child:
+
                               Text(
+                              const Text(
                                 "Following",
                                 style: TextStyle(color: Colors.grey, fontSize: 12),
 
                             ),
                           ),
+
+
+
+
                         ],
                       ),
                       const SizedBox(
@@ -321,7 +334,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                   builder: (context) => ShowfoloweScreen()));
                             },
                             child:
+
                             Text(
+
+                            const Text(
                               "Followed",
                               style: TextStyle
                                 (color: Colors.grey, fontSize: 12),
@@ -365,7 +381,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UserEditScreen()));
+                                  builder: (context) =>
+                                      const EditProfileScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -412,19 +429,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogWidget(
-                                label: 'Log out',
-                                content: 'Log out your account?',
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  AuthService.Logout(context: context);
-                                },
-                              );
-                            },
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -433,7 +441,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           child: Row(
                             children: [
                               Icon(
-                                Icons.add,
+                                Icons.lock_reset,
                                 color: Colors.black,
                               )
                             ],

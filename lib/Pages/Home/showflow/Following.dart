@@ -1,8 +1,12 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../../../Services/userService.dart';
+
+
+import 'package:flutter/material.dart';
 
 class Following extends StatefulWidget {
   const Following({super.key});
@@ -12,6 +16,7 @@ class Following extends StatefulWidget {
 }
 
 class _FollowingState extends State<Following> {
+
   var searchKeyword = "";
   @override
   Widget build(BuildContext context) {
@@ -85,5 +90,10 @@ class _FollowingState extends State<Following> {
         ],
       ),
     ));
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone2/Pages/Home/Video/NotificationScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/chatScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/mainVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoScreen.dart';
@@ -18,10 +19,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var tabIndex = 0;
   List screenIndex = [
-     MainVideoScreen(),
+    const MainVideoScreen(),
     const ChatScreen(),
     const UploadVideoScreen(),
-     MainVideoScreen(),
+    const NotificationScreen(),
     const UserProfileScreen()
   ];
 
@@ -66,10 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
          BottomNavigationBarItem(
              icon: Icon(
-               Icons.person_2_outlined,
+               Icons.notifications,
                size: 30,
              ),
-             label: 'Home'
+             label: 'Notification'
          ),
 
          BottomNavigationBarItem(
