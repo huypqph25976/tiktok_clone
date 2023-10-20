@@ -86,7 +86,7 @@ class RelatedVideoScreen extends StatelessWidget {
                   duration: const Duration(milliseconds: 300),
                   child: InkWell(
                     onTap: () async {
-                      if (!isFollowing) {
+if (!isFollowing) {
                         await UserService.follow(
                             videoUid); // Function to follow a user
                       }
@@ -166,8 +166,7 @@ class RelatedVideoScreen extends StatelessWidget {
                     child: Container(),
                   );
                 }
-
-                if (snapshot.hasData) {
+if (snapshot.hasData) {
                   return Column(
                     children: [
                       Expanded(
@@ -216,7 +215,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                             fontSize: 25,
                                                             color: Colors.red),
                                                       ),
-                                                      Text(
+Text(
                                                         'Are you sure about that?',
                                                         style: TextStyle(
                                                             fontSize: 20),
@@ -260,7 +259,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                           Icon(
                                                             Icons.cancel,
                                                             color: Colors.red,
-                                                          ),
+),
                                                           Padding(
                                                             padding:
                                                                 EdgeInsets.all(
@@ -307,7 +306,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                         style: TextStyle(
                                                             fontSize: 25,
                                                             color: Colors.red),
-                                                      ),
+),
                                                       Text(
                                                         'Are you sure about that?',
                                                         style: TextStyle(
@@ -351,7 +350,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                     SimpleDialogOption(
                                                       onPressed: () =>
                                                           Navigator.of(context)
-                                                              .pop(),
+.pop(),
                                                       child: const Row(
                                                         children: [
                                                           Icon(
@@ -402,7 +401,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Column(
+Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -451,7 +450,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                                       videoID, item['id']);
                                                 },
                                                 child: Icon(
-                                                  Icons.favorite,
+Icons.favorite,
                                                   color: snapshot.data!
                                                           .docs[index]['likes']
                                                           .contains(uid)
@@ -535,7 +534,7 @@ class RelatedVideoScreen extends StatelessWidget {
     final String username = result.get('username');
     var allDocs = await FirebaseFirestore.instance
         .collection('videos')
-        .doc(videoID)
+.doc(videoID)
         .collection('commentList')
         .get();
     int len = allDocs.docs.length;
@@ -610,7 +609,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text(
+Text(
                                         '@ ${item.username}',
                                         style: const TextStyle(
                                           fontSize: 20,
@@ -666,7 +665,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                             size: 40,
                                             color: snapshot
                                                     .data!.docs[index]['likes']
-                                                    .contains(uid)
+.contains(uid)
                                                 ? Colors.red
                                                 : Colors.white,
                                           ),
@@ -718,7 +717,7 @@ class RelatedVideoScreen extends StatelessWidget {
                                             return Container();
                                           },
                                         ),
-                                      ],
+],
                                     ),
                                     Column(
                                       children: [

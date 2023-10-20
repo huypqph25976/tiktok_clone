@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +15,8 @@ import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
+import '../showflow/Showflowscreen.dart';
+import 'changePasswordScreen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -56,6 +58,79 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         .where('uID', isEqualTo: currentUserID)
         .snapshots();
   }
+
+
+  showLogoutDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        contentPadding: const EdgeInsets.all(30),
+        children: [
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 25, color: Colors.red),
+                ),
+                Text(
+                  'Are you sure about that?',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SimpleDialogOption(
+                onPressed: () {
+                  AuthService.Logout(context: context);
+                },
+                child: const Row(
+                  children:  [
+                    Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(fontSize: 20, color: Colors.green),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SimpleDialogOption(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Row(
+                  children:  [
+                    Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        'No',
+                        style: TextStyle(fontSize: 20, color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +182,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                                     context: context,
                                     builder: (BuildContext context) {
                                       return DialogWidget(
-                                          label: 'Your Label',
-                                          content: 'Your Content',
+                                          label: 'Logout',
+                                          content: 'Are you sure bout that?',
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                             AuthService.Logout(
@@ -185,17 +260,41 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            snapshot.data.get('following').length.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20),
+
+
+                         InkWell(
+                           onTap: (){
+                             Navigator.push(context,  MaterialPageRoute(
+                                 builder: (context) => ShowfoloweScreen()));
+
+                           },
+                           child:  Text(
+
+                             snapshot.data.get('following').length.toString(),
+                             style: const TextStyle(
+                                 color: Colors.black,
+                                 fontWeight: FontWeight.w500,
+                                 fontSize: 20),
+
+                           ),
+                         ),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                              const Text(
+                                "Following",
+                                style: TextStyle(color: Colors.grey, fontSize: 12),
+
+                            ),
                           ),
-                          const Text(
-                            "Following",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
+
+
+
+
                         ],
                       ),
                       const SizedBox(
@@ -207,17 +306,36 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            snapshot.data.get('follower').length.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            Text(
+                              snapshot.data.get('follower').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+                            ),
                           ),
-                          const Text(
-                            "Followed",
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
+                            },
+                            child:
+                            const Text(
+                              "Followed",
+                              style: TextStyle
+                                (color: Colors.grey, fontSize: 12),
+                            ),
+                            ),
+
+
+
                         ],
                       ),
                       const SizedBox(
@@ -301,19 +419,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogWidget(
-                                label: 'Log out',
-                                content: 'Log out your account?',
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  AuthService.Logout(context: context);
-                                },
-                              );
-                            },
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -322,7 +431,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           child: Row(
                             children: [
                               Icon(
-                                Icons.add,
+                                Icons.lock_reset,
                                 color: Colors.black,
                               )
                             ],
@@ -334,6 +443,17 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   const SizedBox(
                     height: 8,
                   ),
+
+
+
+                  Text(
+                    snapshot.data.get('bio'),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 17),
+                  ),
+
+
                   Container(
                     child: TabBar(
                       indicatorColor: Colors.black,

@@ -171,17 +171,18 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            "Followed",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
-                          ),
+
                           Text(
                             snapshot.data.get('following').length.toString(),
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
                                 color: Colors.black),
+                          ),
+                          Text(
+                            "Followed",
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.grey.shade700),
                           ),
                         ],
                       ),
@@ -193,17 +194,18 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           const SizedBox(
                             height: 4,
                           ),
-                          Text(
-                            "Follower",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
-                          ),
+
                           Text(
                             snapshot.data.get('follower').length.toString(),
                             style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
                                 color: Colors.black),
+                          ),
+                          Text(
+                            "Follower",
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.grey.shade700),
                           ),
                         ],
                       ),
@@ -225,12 +227,11 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                              const Text(
                                 "Follow",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              ) : const Icon(Icons.check),
+                                    fontSize: 15, color: Colors.white, ),
+                              ) :
+                            const Icon(Icons.person_3),
 
                           ),
-
-
                       const SizedBox(
                         width: 8,
                       ),
@@ -239,8 +240,7 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const ChangePasswordScreen()));
+                                  builder: (context) => ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
@@ -249,10 +249,10 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           child: Row(
                             children: [
                               Text(
-                                "Logout",
+                                "Nhắn tin ",
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.white),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -262,6 +262,7 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
+
 
 
                   Container(
