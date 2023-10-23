@@ -16,12 +16,12 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
-    }
+    // if (kIsWeb) {
+    //   throw UnsupportedError(
+    //     'DefaultFirebaseOptions have not been configured for web - '
+    //     'you can reconfigure this by running the FlutterFire CLI again.',
+    //   );
+    // }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -33,10 +33,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return web;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -64,5 +61,12 @@ class DefaultFirebaseOptions {
     projectId: 'tiktok-clone-4fde1',
     storageBucket: 'tiktok-clone-4fde1.appspot.com',
     iosBundleId: 'com.example.tiktokClone2',
+  );
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyD8xSXM3WMc8a11u1Dp4Dco8XJjpbawUnw',
+    appId: '1:117938042068:android:2c128039076c3084f9b741',
+    messagingSenderId: '117938042068',
+    projectId: 'tiktok-clone-4fde1',
+    storageBucket: 'tiktok-clone-4fde1.appspot.com',
   );
 }
