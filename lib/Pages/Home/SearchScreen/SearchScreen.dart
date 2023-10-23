@@ -25,7 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   Container(
                     margin: const EdgeInsets.fromLTRB(5, 15, 10, 10),
-                    width: 290,
+                    width: MediaQuery.of(context).size.width - 100,
                     height: 50,
                     child: TextField(
                       onChanged: (value) {
@@ -62,9 +62,9 @@ class _SearchScreenState extends State<SearchScreen> {
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('videos')
-                    .orderBy('caption')
-                    .startAt([searchKeyword]).endAt(
-                    ['$searchKeyword\uf8ff']).snapshots(),
+                    .orderBy('caption'.toLowerCase())
+                    .startAt([searchKeyword.toLowerCase()]).endAt(
+                        ['$searchKeyword\uf8ff'.toLowerCase()]).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {

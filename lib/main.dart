@@ -8,18 +8,15 @@ import 'package:tiktok_clone2/firebase_options.dart';
 
 import 'Pages/Home/UserPage/userProfileScreen.dart';
 
-
- Future<void>main() async {
-   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(
-     options: DefaultFirebaseOptions.currentPlatform,);
-   const storage = FlutterSecureStorage();
-   String? UID = await storage.read(key: 'uID');
-   runApp(MyApp(UID: UID));
- }
-
-
-
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  const storage = FlutterSecureStorage();
+  String? UID = await storage.read(key: 'uID');
+  runApp(MyApp(UID: UID));
+}
 
 class MyApp extends StatelessWidget {
   final String? UID;
@@ -31,10 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tick Tock',
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(),
       home: UID != null ? const HomeScreen() : const LoginScreen(),
-
     );
   }
 }
