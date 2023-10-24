@@ -70,59 +70,7 @@ class Tab3 extends StatelessWidget {
                       return Card(
                         color: Colors.grey,
                         child: InkWell(
-                          onLongPress: () {
-                            showMenu(
-                                context: context,
-                                position: RelativeRect.fromRect(
-                                    Rect.fromLTWH(tapDownPosition.dx,
-                                        tapDownPosition.dy, 30, 30),
-                                    Rect.fromLTWH(
-                                        0,
-                                        0,
-                                        overlay!.paintBounds.size.width,
-                                        overlay.paintBounds.size.height)),
-                                items: [
-                                  const PopupMenuItem(
-                                    value: 'bookmark',
-                                    child: Text('Add To Bookmark'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'pin',
-                                    child: Text('Pin on top'),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'edit',
-                                    child: Text('Edit your video'),
-                                  ),
-                                  PopupMenuItem(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          print(item['thumbnail']);
-                                          return DialogWidget(
-                                            label: 'Delete video',
-                                            content:
-                                                'You need delete this video?',
-                                            onPressed: () {
-                                              StorageService.deleteVideo(
-                                                  context,
-                                                  item['id'],
-                                                  item['videoUrl'],
-                                                  item['thumbnail']);
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    value: 'delete',
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                ]);
-                          },
+
                           onTap: () {
                             Navigator.push(
                               context,

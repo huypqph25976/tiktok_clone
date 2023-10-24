@@ -1,24 +1,44 @@
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body:  Center(
-        child: Text(
-          'Chat Screen',
-          style: TextStyle(
-            color: Colors.white,
+    return SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+
+                Container(
+                  margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2.1),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                        Text('Chat', style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        ),
+                      Icon(Icons.search)
+                    ],
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 50,
+                ),
+
+                
+
+              ],
+            ),
           ),
-        ),
-      ),
+
+        )
     );
   }
 }
+

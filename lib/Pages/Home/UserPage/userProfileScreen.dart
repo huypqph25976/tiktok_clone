@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/editProfileScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/UserPage/userEditScreen.dart';
+
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoForm.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
@@ -16,10 +16,10 @@ import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
 
-import '../showflow/Following.dart';
-import '../showflow/Showflowscreen.dart';
 
 import '../showflow/Showflowscreen.dart';
+
+
 import 'changePasswordScreen.dart';
 
 
@@ -335,7 +335,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           InkWell(
                             onTap: (){
                               Navigator.push(context,  MaterialPageRoute(
-                                  builder: (context) => ShowfoloweScreen()));
+                                  builder: (context) => const ShowfoloweScreen()));
                             },
                             child:
 
