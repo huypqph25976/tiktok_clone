@@ -62,9 +62,9 @@ class _SearchScreenState extends State<SearchScreen> {
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('videos')
-                    .orderBy('caption'.toLowerCase())
-                    .startAt([searchKeyword.toLowerCase()]).endAt(
-                        ['$searchKeyword\uf8ff'.toLowerCase()]).snapshots(),
+                    .orderBy('caption')
+                    .startAt([searchKeyword]).endAt(
+                        ['$searchKeyword\uf8ff']).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
