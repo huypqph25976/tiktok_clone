@@ -40,7 +40,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
     return null;
   }
-   Stream<QuerySnapshot> getUserImage() async* {
+
+  Stream<QuerySnapshot> getUserImage() async* {
     final currentUserID = FirebaseAuth.instance.currentUser?.uid;
     yield* FirebaseFirestore.instance
         .collection('users')
@@ -63,6 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           email.text = snapshot.data['email'] ?? '';
           phone.text = snapshot.data['phone'] ?? '';
           bio.text = snapshot.data['bio'] ?? '';
+
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,

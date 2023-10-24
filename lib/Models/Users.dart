@@ -6,6 +6,7 @@ class UserModel {
   List<String>? follower;
   List<String>? follows;
   List<String>? bookmark;
+  List<String>? notification;
   String avatarURL;
   String bio;
 
@@ -18,5 +19,6 @@ class UserModel {
       required this.bio,
       this.follower,
       this.follows,
-      this.bookmark});
+      this.bookmark,
+      this.notification});
 }

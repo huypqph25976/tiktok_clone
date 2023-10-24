@@ -17,13 +17,12 @@ class UserService {
 
     return result;
   }
-  static Future getAlluserFollowing()async{
+
+  static Future getAlluserFollowing() async {
     final CollectionReference users =
-        FirebaseFirestore.instance.collection('users'
-        );
+        FirebaseFirestore.instance.collection('users');
     return users;
   }
-
 
   static Stream getPerson(String personID) {
     final CollectionReference users =

@@ -21,7 +21,8 @@ class TextInputWidget extends StatelessWidget {
       controller: textEditingController,
       decoration: InputDecoration(
         labelText: lableString,
-        prefixIcon: Icon(iconData), // Icon phía trước
+        prefixIcon: Icon(iconData),
+        // Icon phía trước
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         border: OutlineInputBorder(
