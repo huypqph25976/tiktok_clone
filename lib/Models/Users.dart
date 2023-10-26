@@ -9,6 +9,8 @@ class UserModel {
   List<String>? notification;
   String avatarURL;
   String bio;
+  DateTime lastActive;
+  bool isOnline;
 
   UserModel(
       {required this.username,
@@ -20,5 +22,8 @@ class UserModel {
       this.follower,
       this.follows,
       this.bookmark,
-      this.notification});
+      this.notification,
+        required this.lastActive,
+      this.isOnline = false,
+      });
 }

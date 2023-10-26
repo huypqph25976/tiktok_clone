@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/NotificationScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/chatScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/chats/chatScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/mainVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userProfileScreen.dart';
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var tabIndex = 0;
   List screenIndex = [
     const MainVideoScreen(),
-    const ChatScreen(),
+    ChatScreen(),
     const UploadVideoScreen(),
     const NotificationScreen(),
     const UserProfileScreen()

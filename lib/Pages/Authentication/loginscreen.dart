@@ -85,7 +85,7 @@ class _LoginScreen extends State<LoginScreen> {
                 Padding(padding: const EdgeInsets.fromLTRB(0,0,0,20),
                   child: Image.asset("images/tiktok.png", height: 100,),
                 ),
-                const Text("Login to TiK Tok",
+                const Text("Login to Tick Tock",
                 style: TextStyle(
                     fontSize: 26, fontWeight: FontWeight.bold
                 ),),
