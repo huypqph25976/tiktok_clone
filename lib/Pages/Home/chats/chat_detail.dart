@@ -44,12 +44,12 @@ class _ChatDetailState extends State<ChatDetail> {
   final chatID;
   final currentUserID = FirebaseAuth.instance.currentUser?.uid;
   var chatDocID;
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
 
   _ChatDetailState(
       this.personID, this.personUsername, this.chatID, this.personImage);
 
-  void sendMessage(String message, String peopleChatID, String type) {
+  void sendMessage(String message, String personChatID, String type) {
     if (message == '') return;
     chats.doc(chatID).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
@@ -57,7 +57,7 @@ class _ChatDetailState extends State<ChatDetail> {
       'content': message,
       'type': type
     }).then((value) async {
-      _textEditingController.text = '';
+      textEditingController.text = '';
 
       try {
         List<dynamic> data = await ChatService.getUserPeopleChatID(
@@ -66,14 +66,14 @@ class _ChatDetailState extends State<ChatDetail> {
         (data).map((e) => e as String).toList();
         if (listPersonID != null) {
           for (int i = 0; i < listPersonID.length; i++) {
-            if (peopleChatID == listPersonID[i]) {
+            if (personChatID == listPersonID[i]) {
               return;
             }
           }
           final CollectionReference users =
           FirebaseFirestore.instance.collection('users');
           users.doc(currentUserID).update({
-            'myChatWithPersonID': FieldValue.arrayUnion([peopleChatID]),
+            'myChatWithPersonID': FieldValue.arrayUnion([personChatID]),
           });
         }
 
@@ -81,7 +81,7 @@ class _ChatDetailState extends State<ChatDetail> {
         final CollectionReference users =
         FirebaseFirestore.instance.collection('users');
         users.doc(currentUserID).update({
-          'myChatWithPersonID': FieldValue.arrayUnion([peopleChatID]),
+          'myChatWithPersonID': FieldValue.arrayUnion([personChatID]),
         });
       }
     });
@@ -289,13 +289,11 @@ class _ChatDetailState extends State<ChatDetail> {
                               // if (image == null) {
                               //   context.read<LoadingModel>().changeLoading();
                               // } else {
-                                String fileName =
-                                await StorageService.uploadImage(
-                                    image);
-                                sendMessage(fileName, personID, 'image');
-                                try {
-                                  context.read<LoadingModel>().changeLoading();
-                                } catch (e) {}
+                                String fileImage = await StorageService.uploadImage(image);
+                                sendMessage(fileImage, personID, 'image');
+                                // try {
+                                //   // context.read<LoadingModel>().changeLoading();
+                                // } catch (e) {}
                               // }
 
                             }, icon: Icon(Icons.enhance_photo_translate, color: Colors.black,)),
@@ -303,30 +301,26 @@ class _ChatDetailState extends State<ChatDetail> {
                         IconButton(
                             onPressed: () async {
                               // context.read<LoadingModel>().changeLoading();
-                              File? fileImage =
-                              await getImage(ImageSource.gallery);
+                              File? image = await getImage(ImageSource.gallery);
                               // if (fileImage == null) {
                               //   context.read<LoadingModel>().changeLoading();
                               // } else {
-                                String fileName =
-                                await StorageService.uploadImage(
-                                    fileImage);
-                                sendMessage(fileName, personID, 'image');
-                                try {
-                                  context
-                                      .read<LoadingModel>()
-                                      .changeLoading();
-                                } catch (e) {}
+                                String fileImage = await StorageService.uploadImage(image);
+                                sendMessage(fileImage, personID, 'image');
+                                // try {
+                                //   context
+                                //       .read<LoadingModel>()
+                                //       .changeLoading();
+                                // } catch (e) {}
                               // }
                             },
-                            icon: Icon(Icons.image_outlined,
-                                color: Colors.black)),
+                            icon: Icon(Icons.image_outlined, color: Colors.black)),
 
                         Expanded(
                           child: Container(
                             height: 45,
                             child: TextField(
-                              controller: _textEditingController,
+                              controller: textEditingController,
                               textAlignVertical: TextAlignVertical.bottom,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
@@ -339,7 +333,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                 hintText: "Type here ...",
                                 suffixIcon: IconButton(
                                   onPressed: () {
-                                    sendMessage(_textEditingController.text,
+                                    sendMessage(textEditingController.text,
                                         personID, 'text');
                                   },
                                   icon: Icon(
