@@ -16,9 +16,8 @@ class FollowingVideoScreen extends StatelessWidget {
 
   String? uid = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference videos = FirebaseFirestore.instance.collection('videos');
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection('users');
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
+
 
   final TextEditingController textEditingController2 = TextEditingController();
   final TextEditingController textEditingController = TextEditingController();
@@ -180,6 +179,10 @@ class FollowingVideoScreen extends StatelessWidget {
                                 tapDownPosition = details.globalPosition;
                               },
                               onLongPress: () {
+
+                                String idC = item['uID'].toString();
+                                if(idC == uid)
+                                  
                                 showMenu(
                                     context: context,
                                     position: RelativeRect.fromRect(
