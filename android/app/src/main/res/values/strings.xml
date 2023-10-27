@@ -2,4 +2,5 @@
 <resources>
     <string name="facebook_app_id">373355025121914</string>
     <string name="facebook_client_token">fb9a794bf715b8d8f743b41a63062ded</string>
+    <string name="default_notification_channel_id">com.example.chat_app.urgent</string>
 </resources>

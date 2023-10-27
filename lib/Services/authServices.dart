@@ -4,31 +4,33 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginscreen.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithemail.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
 import 'package:tiktok_clone2/Widgets/snackBar.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 
-
 class AuthService {
-
   FirebaseAuth auth = FirebaseAuth.instance;
+  static final notifications = NotificationsService();
 
   static loginFetch(
       {required BuildContext context,
-        required email,
-        required password}) async {
+      required email,
+      required password}) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      const storage =  FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       String? uID = userCredential.user?.uid.toString();
       await storage.write(key: 'uID', value: uID);
+      await notifications.requestPermission();
+      await notifications.getToken();
 
       FocusScope.of(context).unfocus();
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) =>HomeScreen()),
-              (route) => false);
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
       getSnackBar(
         'Login',
         'Login Success.',
@@ -46,7 +48,7 @@ class AuthService {
         print(e.code);
 
         getSnackBar(
-            'Login', 'Wrong password provided for that user.', Colors.red)
+                'Login', 'Wrong password provided for that user.', Colors.red)
             .show(context);
         //print('Wrong password provided for that user.');
       }
@@ -56,12 +58,12 @@ class AuthService {
   static Logout({required BuildContext context}) async {
     try {
       FirebaseAuth.instance.signOut();
-      final storage = FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       await storage.deleteAll();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
-            (route) => false,
+        (route) => false,
       );
       getSnackBar(
         'Logout',
@@ -73,19 +75,22 @@ class AuthService {
 
   static registerFetch(
       {required BuildContext context,
-        required email,
-        required password,
-        required username,
-        required uid}) async {
+      required email,
+      required password,
+      required username,
+      required uid}) async {
     try {
-
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       await UserService.addUser(
           UID: userCredential.user?.uid, username: username, email: email);
+      await notifications.requestPermission();
+      await notifications.getToken();
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginWithEmail()), (route) => false,
+        MaterialPageRoute(builder: (context) => LoginWithEmail()),
+        (route) => false,
       );
       getSnackBar(
         'Register',

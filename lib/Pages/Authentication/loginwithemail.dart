@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tiktok_clone2/Pages/Authentication/forgot_pass.dart';
 import 'package:tiktok_clone2/Pages/Authentication/registerEmail.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Services/userService.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 
-
 class LoginWithEmail extends StatelessWidget {
-
   LoginWithEmail({Key? key}) : super(key: key);
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
-
   bool isValidEmail(String email) {
     return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(email);
   }
 
@@ -59,7 +56,6 @@ class LoginWithEmail extends StatelessWidget {
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
@@ -70,60 +66,52 @@ class LoginWithEmail extends StatelessWidget {
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                     hintText: "Email",
-                    prefixIcon: Icon(Icons.mail,color: Colors.black),
+                    prefixIcon: Icon(Icons.mail, color: Colors.black),
                     enabledBorder: OutlineInputBorder(),
-
                   ),
-                  
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-
-                  onSaved: (value) {
-
-                  },
-                  validator: (value){
+                  onSaved: (value) {},
+                  validator: (value) {
                     return validateEmail(value!);
                   },
                 ),
-
                 const SizedBox(height: 20),
                 TextFormField(
-                  controller:  passwordController,
+                  controller: passwordController,
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                     hintText: "Password",
-                    prefixIcon: Icon(Icons.key,color: Colors.black),
+                    prefixIcon: Icon(Icons.key, color: Colors.black),
                     enabledBorder: OutlineInputBorder(),
                   ),
                   obscureText: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-
                 ),
-
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ForgotPass()),
+                      MaterialPageRoute(
+                          builder: (context) => const ForgotPass()),
                     );
-
                   },
-                  child:Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: const Text(
+                        padding: EdgeInsets.only(top: 5),
+                        child: Text(
                           "Forgot Password",
                           style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.blue,
+                            fontSize: 13,
+                            color: Colors.blue,
                           ),
-                          textAlign: TextAlign.center,),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
                   ),
                 ),
-
                 Container(
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(top: 15),
@@ -132,11 +120,8 @@ class LoginWithEmail extends StatelessWidget {
                       doLogin(context);
                     },
                     style: ElevatedButton.styleFrom(
-
                       backgroundColor: Colors.redAccent,
                     ),
-
-
                     child: const Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Text(
@@ -148,28 +133,24 @@ class LoginWithEmail extends StatelessWidget {
                       ),
                     ),
                   ),
-
-
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterEmail()),
                     );
-
                   },
-                  child:const Text(
+                  child: const Text(
                     "Don't have an account? Sign up here.",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black
-                    ),
-                    textAlign: TextAlign.center,),
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
                 )
               ],
-
             ),
           ),
         ),

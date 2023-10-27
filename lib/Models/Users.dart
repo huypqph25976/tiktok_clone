@@ -9,6 +9,7 @@ class UserModel {
   List<String>? notification;
   String avatarURL;
   String bio;
+  String? token;
   DateTime lastActive;
   bool isOnline;
 
@@ -23,6 +24,7 @@ class UserModel {
       this.follows,
       this.bookmark,
       this.notification,
+      this.token});
         required this.lastActive,
       this.isOnline = false,
       });

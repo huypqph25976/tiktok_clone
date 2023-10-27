@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Services/authServices.dart';
 
 class RegisterEmail extends StatelessWidget {
@@ -11,7 +12,7 @@ class RegisterEmail extends StatelessWidget {
 
   bool isValidEmail(String email) {
     return RegExp(
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
         .hasMatch(email);
   }
 
@@ -32,13 +33,13 @@ class RegisterEmail extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
           username: usernameController.text,
-          uid: ''
-      );
+          uid: '');
     }
   }
 
   bool validate() {
-    if (usernameController.text.isNotEmpty && emailController.text.isNotEmpty &&
+    if (usernameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         confirmPasswordController.text.isNotEmpty) {
       return true;
@@ -78,13 +79,11 @@ class RegisterEmail extends StatelessWidget {
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-
         body: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-
                 TextField(
                   controller: usernameController,
                   decoration: const InputDecoration(
@@ -93,10 +92,8 @@ class RegisterEmail extends StatelessWidget {
                     prefixIcon: Icon(Icons.person, color: Colors.black),
                     enabledBorder: OutlineInputBorder(),
                   ),
-
                 ),
                 const SizedBox(height: 20),
-
                 TextField(
                   controller: emailController,
                   decoration: const InputDecoration(
@@ -105,9 +102,7 @@ class RegisterEmail extends StatelessWidget {
                     prefixIcon: Icon(Icons.mail, color: Colors.black),
                     enabledBorder: OutlineInputBorder(),
                   ),
-
                 ),
-
                 const SizedBox(height: 20),
                 TextField(
                   controller: passwordController,
@@ -118,9 +113,7 @@ class RegisterEmail extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(),
                   ),
                   obscureText: true,
-
                 ),
-
                 const SizedBox(height: 20),
                 TextField(
                   controller: confirmPasswordController,
@@ -131,23 +124,16 @@ class RegisterEmail extends StatelessWidget {
                     enabledBorder: OutlineInputBorder(),
                   ),
                   obscureText: true,
-
                 ),
-
                 const SizedBox(width: 20),
                 Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
+                  width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.only(top: 15),
                   child: ElevatedButton(
                     onPressed: () {
-
                       doRegister(context);
                     },
                     style: ElevatedButton.styleFrom(
-
                       backgroundColor: Colors.redAccent,
                     ),
                     child: const Padding(
@@ -162,9 +148,7 @@ class RegisterEmail extends StatelessWidget {
                     ),
                   ),
                 ),
-
               ],
-
             ),
           ),
         ),

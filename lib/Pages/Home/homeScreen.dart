@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone2/Pages/Home/Video/NotificationScreen.dart';
-import 'package:tiktok_clone2/Pages/Home/chats/chatScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/chatScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/mainVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userProfileScreen.dart';
@@ -12,8 +12,6 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
-
-
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -29,61 +27,49 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-     bottomNavigationBar: BottomNavigationBar(
-       onTap: (index){
-         setState(() {
-           tabIndex = index;
-         });
-       },
-       type: BottomNavigationBarType.fixed,
-       backgroundColor: Colors.black,
-       selectedItemColor: Colors.white,
-       unselectedItemColor: Colors.white24,
-       currentIndex: tabIndex,
-       items: const [
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            tabIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white24,
+        currentIndex: tabIndex,
+        items: const [
           BottomNavigationBarItem(
-             icon: Icon(
-               Icons.home,
-               size: 30,
-             ),
-           label: 'Home'
-         ),
-
-         BottomNavigationBarItem(
-             icon: Icon(
-               Icons.chat,
-               size: 30,
-             ),
-             label: 'Chat'
-         ),
-
-
+              icon: Icon(
+                Icons.home,
+                size: 30,
+              ),
+              label: 'Home'),
           BottomNavigationBarItem(
-
-             icon: CustomButton(),
-             label: '',
-         ),
-
-         BottomNavigationBarItem(
-             icon: Icon(
-               Icons.notifications,
-               size: 30,
-             ),
-             label: 'Notification'
-         ),
-
-         BottomNavigationBarItem(
-             icon: Icon(
-               Icons.person_2_outlined,
-               size: 30,
-             ),
-             label: 'Profile'
-         ),
-       ],
-     ),
+              icon: Icon(
+                Icons.chat,
+                size: 30,
+              ),
+              label: 'Chat'),
+          BottomNavigationBarItem(
+            icon: CustomButton(),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+                size: 30,
+              ),
+              label: 'Notification'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_2_outlined,
+                size: 30,
+              ),
+              label: 'Profile'),
+        ],
+      ),
       body: screenIndex[tabIndex],
     );
-
   }
 }

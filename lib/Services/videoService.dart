@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 
 class VideoService {
   static likeVideo(String id) async {
     DocumentSnapshot doc =
         await FirebaseFirestore.instance.collection('videos').doc(id).get();
+
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await FirebaseFirestore.instance.collection('videos').doc(id).update({
