@@ -9,6 +9,7 @@ class UserModel {
   List<String>? notification;
   String avatarURL;
   String bio;
+  String? token;
 
   UserModel(
       {required this.username,
@@ -20,5 +21,6 @@ class UserModel {
       this.follower,
       this.follows,
       this.bookmark,
-      this.notification});
+      this.notification,
+      this.token});
 }

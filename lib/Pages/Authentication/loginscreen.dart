@@ -4,8 +4,8 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithemail.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithphone.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,25 +15,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-
   signInWithGoogle() async {
-
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
-
     AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken
-    );
+        accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
     print(userCredential.user?.displayName);
-    if(userCredential.user != null){
-      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen(),),);
+    if (userCredential.user != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
     }
-
   }
 
   facebookLogin() async {
@@ -55,17 +54,18 @@ class _LoginScreen extends State<LoginScreen> {
         print('Hello, ${profile!.name}! You ID: ${profile.userId}');
         print('Your profile image: $imageUrl');
 
-        if (email != null)
+        if (email != null) {
           print('And your email is $email');
-        Navigator.push(context, MaterialPageRoute(builder: ((context)=>HomeScreen())));
-
+        }
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const HomeScreen())));
 
         break;
       case FacebookLoginStatus.cancel:
-      // User cancel log in
+        // User cancel log in
         break;
       case FacebookLoginStatus.error:
-      // Log in failed
+        // Log in failed
         print('Error while log in: ${res.error}');
         break;
     }
@@ -82,45 +82,64 @@ class _LoginScreen extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(padding: const EdgeInsets.fromLTRB(0,0,0,20),
-                  child: Image.asset("images/tiktok.png", height: 100,),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: Image.asset(
+                    "images/tiktok.png",
+                    height: 100,
+                  ),
                 ),
-                const Text("Login to TiK Tok",
-                style: TextStyle(
-                    fontSize: 26, fontWeight: FontWeight.bold
-                ),),
+                const Text(
+                  "Login to TiK Tok",
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
 
                 Container(
-                    margin: const EdgeInsets.only(top: 10,bottom: 20),
-                   child: const Text("Manage your account, check notifications, \ncomment on videos, and more",
-                  style: TextStyle(
-                      fontSize: 16,color: Colors.grey,
-                  ),)),
+                    margin: const EdgeInsets.only(top: 10, bottom: 20),
+                    child: const Text(
+                      "Manage your account, check notifications, \ncomment on videos, and more",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    )),
 
                 // phone login button
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
-                 child: Column(
-                   children: [
-                     ElevatedButton(onPressed: (){
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginWithPhone()));
-
-                     },style: ElevatedButton.styleFrom(
-                       backgroundColor: Colors.grey
-                     ), child: const Padding(
-                       padding:  EdgeInsets.all(15.0),
-                       child: Row(
-                         children: [
-                           Icon(Icons.phone,color: Colors.black,),
-                           SizedBox(width: 20,),
-                           Text("Login with phone number",
-                             style: TextStyle(
-                                 fontSize: 14, color: Colors.black),)
-                         ],
-                       ),
-                     ))
-                   ],
-                 ),
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LoginWithPhone()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey),
+                          child: const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.phone,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Login with phone number",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ))
+                    ],
+                  ),
                 ),
 
                 // email login button
@@ -129,22 +148,34 @@ class _LoginScreen extends State<LoginScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      ElevatedButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginWithEmail()));
-                      },style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey
-                      ), child: const Padding(
-                        padding:  EdgeInsets.all(15.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.email,color: Colors.black,),
-                            SizedBox(width: 20,),
-                            Text("Login with Email",
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.black),)
-                          ],
-                        ),
-                      ))
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginWithEmail()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey),
+                          child: const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.email,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Login with Email",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ),
@@ -155,22 +186,31 @@ class _LoginScreen extends State<LoginScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      ElevatedButton(onPressed: (){
-                        signInWithGoogle();
-                      },style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey
-                      ), child: const Padding(
-                        padding:  EdgeInsets.all(15.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.public,color: Colors.black,),
-                            SizedBox(width: 20,),
-                            Text("Login with Google",
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.black),)
-                          ],
-                        ),
-                      ))
+                      ElevatedButton(
+                          onPressed: () {
+                            signInWithGoogle();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey),
+                          child: const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.public,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Login with Google",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ),
@@ -180,22 +220,31 @@ class _LoginScreen extends State<LoginScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      ElevatedButton(onPressed: (){
-                        facebookLogin();
-                      },style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey
-                      ), child: const Padding(
-                        padding:  EdgeInsets.all(15.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.facebook,color: Colors.black,),
-                            SizedBox(width: 20,),
-                            Text("Login with Facebook",
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.black),)
-                          ],
-                        ),
-                      ))
+                      ElevatedButton(
+                          onPressed: () {
+                            facebookLogin();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey),
+                          child: const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.facebook,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Login with Facebook",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ),
@@ -204,11 +253,6 @@ class _LoginScreen extends State<LoginScreen> {
           ),
         ),
       ),
-          
     );
-
-
-
   }
 }
-

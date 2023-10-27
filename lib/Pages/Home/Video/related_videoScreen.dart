@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
 
 import '../../../Models/Video.dart';
@@ -12,11 +13,18 @@ import '../../../Services/userService.dart';
 import '../../../Services/videoService.dart';
 import '../../../Widgets/videoItem.dart';
 
-class RelatedVideoScreen extends StatelessWidget {
-  RelatedVideoScreen({super.key});
+class RelatedVideoScreen extends StatefulWidget {
+  const RelatedVideoScreen({super.key, required this.receiverId});
+  final String receiverId;
 
+  @override
+  State<RelatedVideoScreen> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<RelatedVideoScreen> {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference videos = FirebaseFirestore.instance.collection('videos');
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -582,6 +590,13 @@ class RelatedVideoScreen extends StatelessWidget {
       'id': 'Comment $len',
       'likes': []
     }).then((value) async {});
+  }
+
+  final notificationService = NotificationsService();
+  @override
+  void initState() {
+    notificationService.getReceiverToken(widget.receiverId);
+    super.initState();
   }
 
   @override

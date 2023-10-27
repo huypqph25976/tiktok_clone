@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/SearchScreen/SearchScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/followingVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/related_videoScreen.dart';
@@ -14,6 +17,15 @@ class MainVideoScreen extends StatefulWidget {
 }
 
 class _MainVideoScreenState extends State<MainVideoScreen> {
+  String receiverToken = '';
+  Future<void> getReceiverToken(String? receiverId) async {
+    final getToken = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .get();
+    receiverToken = await getToken.data()!['token'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -77,7 +89,7 @@ class _MainVideoScreenState extends State<MainVideoScreen> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          RelatedVideoScreen(),
+                          RelatedVideoScreen(receiverId: receiverToken),
                           FollowingVideoScreen(),
                         ],
                       ),
