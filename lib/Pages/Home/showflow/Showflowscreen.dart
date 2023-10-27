@@ -23,10 +23,11 @@ class _ShowfoloweScreenState extends State<ShowfoloweScreen> {
       child: Scaffold(
         appBar: AppBar(
 
-          backgroundColor: Colors.white,
-          title: const Text('sdssa', textAlign: TextAlign.center,),
+          backgroundColor: Colors.black,
+          title: const Text('Follow', textAlign: TextAlign.center,),
           bottom: const TabBar(
-            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(child: Text("Following",
                 style: TextStyle(fontSize: 20, color: Colors.grey),)),
@@ -38,8 +39,8 @@ class _ShowfoloweScreenState extends State<ShowfoloweScreen> {
         ),
         body: TabBarView(
           children: [
-            Following(),
-            const Follower(),
+            Following(personID: '',),
+            const Follower(personID: '',),
           ],
         ),
 

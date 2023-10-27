@@ -267,22 +267,22 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           ),
 
 
-                         InkWell(
-                           onTap: (){
-                             Navigator.push(context,  MaterialPageRoute(
-                                 builder: (context) => ShowfoloweScreen()));
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => ShowfoloweScreen()));
 
-                           },
-                           child:  Text(
+                            },
+                            child:  Text(
 
-                             snapshot.data.get('following').length.toString(),
-                             style: const TextStyle(
-                                 color: Colors.black,
-                                 fontWeight: FontWeight.w500,
-                                 fontSize: 20),
+                              snapshot.data.get('following').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
 
-                           ),
-                         ),
+                            ),
+                          ),
 
                           InkWell(
                             onTap: (){
@@ -292,12 +292,12 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             child:
 
 
-                              const Text(
-                                "Following",
-                                style: TextStyle(color: Colors.grey, fontSize: 12),
+                            const Text(
+                              "Following",
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
 
 
-                          ),
+                            ),
 
 
 
@@ -342,7 +342,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
 
 
                             const Text(
-                              "Followed",
+                              "Follower",
                               style: TextStyle
                                 (color: Colors.grey, fontSize: 12),
                             ),
@@ -382,7 +382,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const EditProfileScreen()));
+                                  const EditProfileScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),

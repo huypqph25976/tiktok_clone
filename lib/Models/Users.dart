@@ -23,9 +23,9 @@ class UserModel {
       this.follower,
       this.follows,
       this.bookmark,
+        this.token,
       this.notification,
-      this.token});
-        required this.lastActive,
-      this.isOnline = false,
-      });
+      required this.lastActive,
+        this.isOnline = false,});
+
 }

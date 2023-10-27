@@ -182,7 +182,7 @@ class FollowingVideoScreen extends StatelessWidget {
 
                                 String idC = item['uID'].toString();
                                 if(idC == uid)
-                                  
+
                                 showMenu(
                                     context: context,
                                     position: RelativeRect.fromRect(
