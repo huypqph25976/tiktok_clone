@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +22,8 @@ class RelatedVideoScreen extends StatefulWidget {
 
 class _MyWidgetState extends State<RelatedVideoScreen> {
   String? uid = FirebaseAuth.instance.currentUser?.uid;
-  CollectionReference videos = FirebaseFirestore.instance.collection('videos');
-
-  final CollectionReference users =
-      FirebaseFirestore.instance.collection('users');
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  List<dynamic> list = [''];
+  final CollectionReference videos = FirebaseFirestore.instance.collection('videos');
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   final TextEditingController textEditingController2 = TextEditingController();
   final TextEditingController textEditingController = TextEditingController();
@@ -196,7 +191,10 @@ class _MyWidgetState extends State<RelatedVideoScreen> {
                                 tapDownPosition = details.globalPosition;
                               },
                               onLongPress: () {
-                                showMenu(
+                                String idC = item['uID'].toString();
+                                if(idC == uid)
+
+                                  showMenu(
                                     context: context,
                                     position: RelativeRect.fromRect(
                                         Rect.fromLTWH(tapDownPosition.dx,

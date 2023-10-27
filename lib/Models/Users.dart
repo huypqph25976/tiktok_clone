@@ -10,6 +10,8 @@ class UserModel {
   String avatarURL;
   String bio;
   String? token;
+  DateTime lastActive;
+  bool isOnline;
 
   UserModel(
       {required this.username,
@@ -23,4 +25,7 @@ class UserModel {
       this.bookmark,
       this.notification,
       this.token});
+        required this.lastActive,
+      this.isOnline = false,
+      });
 }

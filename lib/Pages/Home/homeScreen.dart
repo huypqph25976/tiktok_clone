@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var tabIndex = 0;
   List screenIndex = [
     const MainVideoScreen(),
-    const ChatScreen(),
+    ChatScreen(),
     const UploadVideoScreen(),
     const NotificationScreen(),
     const UserProfileScreen()

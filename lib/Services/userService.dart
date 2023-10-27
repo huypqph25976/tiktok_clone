@@ -52,7 +52,10 @@ class UserService {
             'avartarURL':
                 'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
             'phone': 'None',
-            'bio': 'Bio not yet'
+            'bio': 'Bio not yet',
+            'isOnline': true,
+            'lastActive': DateTime.now(),
+
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
