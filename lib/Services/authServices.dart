@@ -29,7 +29,7 @@ class AuthService {
       FocusScope.of(context).unfocus();
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
           (route) => false);
       getSnackBar(
         'Login',

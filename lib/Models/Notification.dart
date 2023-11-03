@@ -1,14 +1,14 @@
 class NotificationModel {
-  String image;
   String title;
   String content;
   String time;
   String idUser;
+  String image;
 
   NotificationModel(
-      {required this.image,
-      required this.title,
+      {required this.title,
       required this.content,
       required this.idUser,
-      required this.time});
+      required this.time,
+      required this.image});
 }

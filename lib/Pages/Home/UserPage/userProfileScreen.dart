@@ -1,10 +1,10 @@
 import 'dart:io';
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab1.dart';
 import 'package:tiktok_clone2/Pages/Home/ProfileTabbar/Tab2.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/editProfileScreen.dart';
@@ -16,12 +16,9 @@ import 'package:tiktok_clone2/Widgets/dialogWidget.dart';
 
 import '../ProfileTabbar/Tab3.dart';
 
-
 import '../showflow/Showflowscreen.dart';
 
-
 import 'changePasswordScreen.dart';
-
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -64,7 +61,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
         .snapshots();
   }
 
-
   showLogoutDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -95,7 +91,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   AuthService.Logout(context: context);
                 },
                 child: const Row(
-                  children:  [
+                  children: [
                     Icon(
                       Icons.done,
                       color: Colors.green,
@@ -113,7 +109,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
               SimpleDialogOption(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Row(
-                  children:  [
+                  children: [
                     Icon(
                       Icons.cancel,
                       color: Colors.red,
@@ -135,8 +131,6 @@ class _UserProfileScreenState extends State<UserProfileScreen>
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
@@ -150,7 +144,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
-
+            NotificationsService notificationsService = NotificationsService();
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -265,66 +259,56 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           const SizedBox(
                             height: 4,
                           ),
-
-
                           InkWell(
-                            onTap: (){
-                              Navigator.push(context,  MaterialPageRoute(
-                                  builder: (context) => ShowfoloweScreen()));
-
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ShowfoloweScreen()));
                             },
-                            child:  Text(
-
+                            child: Text(
                               snapshot.data.get('following').length.toString(),
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 20),
-
                             ),
                           ),
-
                           InkWell(
-                            onTap: (){
-                              Navigator.push(context,  MaterialPageRoute(
-                                  builder: (context) => ShowfoloweScreen()));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ShowfoloweScreen()));
                             },
-                            child:
-
-
-                            const Text(
+                            child: const Text(
                               "Following",
-                              style: TextStyle(color: Colors.grey, fontSize: 12),
-
-
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
                             ),
-
-
-
-
-                          ) ],
-
+                          )
+                        ],
                       ),
                       const SizedBox(
                         width: 40,
                       ),
-
-
-
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           const SizedBox(
                             height: 4,
                           ),
-
                           InkWell(
-                            onTap: (){
-                              Navigator.push(context,  MaterialPageRoute(
-                                  builder: (context) => ShowfoloweScreen()));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ShowfoloweScreen()));
                             },
-                            child:
-                            Text(
+                            child: Text(
                               snapshot.data.get('follower').length.toString(),
                               style: const TextStyle(
                                   color: Colors.black,
@@ -333,20 +317,20 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                             ),
                           ),
                           InkWell(
-                            onTap: (){
-                              Navigator.push(context,  MaterialPageRoute(
-                                  builder: (context) => const ShowfoloweScreen()));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ShowfoloweScreen()));
                             },
-                            child:
-
-
-
-                            const Text(
+                            child: const Text(
                               "Follower",
-                              style: TextStyle
-                                (color: Colors.grey, fontSize: 12),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
                             ),
-                          )],
+                          )
+                        ],
                       ),
                       const SizedBox(
                         width: 50,
@@ -382,7 +366,7 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                  const EditProfileScreen()));
+                                      EditProfileScreen(snapshot: snapshot)));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -432,7 +416,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChangePasswordScreen()));
+                                  builder: (context) =>
+                                      ChangePasswordScreen()));
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
@@ -453,17 +438,10 @@ class _UserProfileScreenState extends State<UserProfileScreen>
                   const SizedBox(
                     height: 8,
                   ),
-
-
-
                   Text(
                     snapshot.data.get('bio'),
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 17),
+                    style: const TextStyle(color: Colors.black, fontSize: 17),
                   ),
-
-
                   Container(
                     child: TabBar(
                       indicatorColor: Colors.black,

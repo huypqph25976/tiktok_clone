@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 
 class VideoService {
-  static likeVideo(String id) async {
+  static likeVideo(String id, String idOther) async {
     DocumentSnapshot doc =
         await FirebaseFirestore.instance.collection('videos').doc(id).get();
-
     String? uid = FirebaseAuth.instance.currentUser?.uid;
+    DocumentSnapshot docUser =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
     if ((doc.data()! as dynamic)['likes'].contains(uid)) {
       await FirebaseFirestore.instance.collection('videos').doc(id).update({
         'likes': FieldValue.arrayRemove([uid]),
@@ -16,6 +18,12 @@ class VideoService {
       await FirebaseFirestore.instance.collection('videos').doc(id).update({
         'likes': FieldValue.arrayUnion([uid]),
       });
+      NotificationsService().sendNotification(
+          title: "New notification",
+          body:
+              'Bạn vừa nhận 1 lượt thích từ ${(docUser.data()! as dynamic)['username']}',
+          idOther: idOther,
+          avartarUrl: '${(docUser.data()! as dynamic)['avartarURL']}');
     }
   }
 

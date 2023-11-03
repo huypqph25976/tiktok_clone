@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -12,8 +15,14 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  NotificationsService notificationsService = NotificationsService();
-  getUser() {}
+  final notification = NotificationsService();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notification.firebaseNotification(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

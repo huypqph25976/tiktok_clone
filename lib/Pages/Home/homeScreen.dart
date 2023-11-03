@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Home/Notification/NotificationScreen.dart';
+import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 
 import 'package:tiktok_clone2/Pages/Home/Video/mainVideoScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/Video/uploadVideoScreen.dart';
@@ -10,14 +11,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'chats/chatScreen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key, this.sendIndex = 0});
+  var sendIndex;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var tabIndex = 0;
   List screenIndex = [
     const MainVideoScreen(),
     ChatScreen(),
@@ -25,6 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
     const NotificationScreen(),
     const UserProfileScreen()
   ];
+  final notification = NotificationsService();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notification.firebaseNotification(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
-            tabIndex = index;
+            widget.sendIndex = index;
           });
         },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white24,
-        currentIndex: tabIndex,
+        currentIndex: widget.sendIndex,
         items: const [
           BottomNavigationBarItem(
               icon: Icon(
@@ -71,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Profile'),
         ],
       ),
-      body: screenIndex[tabIndex],
+      body: screenIndex[widget.sendIndex],
     );
   }
 }
