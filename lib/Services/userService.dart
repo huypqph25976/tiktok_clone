@@ -50,6 +50,7 @@ class UserService {
             'email': email,
             'following': [],
             'follower': [],
+            'bookmark': [],
             'avartarURL':
                 'https://iotcdn.oss-ap-southeast-1.aliyuncs.com/RpN655D.png',
             'phone': 'None',
