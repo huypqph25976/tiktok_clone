@@ -6,12 +6,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:tiktok_clone2/Pages/Home/Notification/NotificationScreen.dart';
 
 class NotificationsService {
   static const key =
-      'AAAAG3WntNQ:APA91bElbsqg4BrxLzAof8LSNJ_vBvMEF-yL9Bh0Da4edg8W61n9NnMAspWV-bjcb0je1tAONppl7iWYRKuw6-qAgWXt1dHLc_L15hSm6oAAJRq9u8S4j2FBWdyd5G_XFdLvSF8xnNt0';
+      'AAAAG3WntNQ:APA91bFYrfTpcyMi1Tj_m4MA3kSdYnVKavjWCURz9rithAhJiFyhrU4az4Iio_I8JMKMyBlSaNO76Jil4ipvyn0YYq8tD9FDel7_CcgAeXQLNvMpGr6HPBt-gfqGo0P0oFy_47tsmMkR';
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   void _initLocalNotification() {
@@ -40,6 +41,7 @@ class NotificationsService {
 
   Future<void> _showLocalNotification(RemoteMessage message) async {
     try {
+      final senderAvatarUrl = message.data['senderAvatarUrl'];
       final styleInformation = BigTextStyleInformation(
           message.notification!.body.toString(),
           htmlFormatBigText: true,
@@ -50,7 +52,8 @@ class NotificationsService {
           'com.example.app_toptop.urgent', 'mychannelid',
           importance: Importance.max,
           styleInformation: styleInformation,
-          priority: Priority.max);
+          priority: Priority.max,
+          largeIcon: senderAvatarUrl);
 
       const iosDetails =
           DarwinNotificationDetails(presentAlert: true, presentBadge: true);
@@ -109,6 +112,7 @@ class NotificationsService {
         .collection('users')
         .doc(receiverId)
         .get();
+    print('${getToken.data()}-----------------------');
     return await getToken.data()!['token'];
   }
 
@@ -134,7 +138,8 @@ class NotificationsService {
   Future<void> sendNotification(
       {required String title,
       required String body,
-      required String idOther}) async {
+      required String idOther,
+      required String avartarUrl}) async {
     String token = await getReceiverToken(idOther);
     String uid = FirebaseAuth.instance.currentUser!.uid;
     try {
@@ -163,10 +168,33 @@ class NotificationsService {
               debugPrint('đây là thành công ============ ${value.body}'))
           .onError((error, stackTrace) =>
               debugPrint('đây là thất bại==============${error.toString()}'));
+      await addNotification(
+          content: body, idUser: idOther, title: title, avartarUrl: avartarUrl);
       print('thành công=======================');
     } catch (e) {
       print('Lỗi ==========================');
       debugPrint(e.toString());
+    }
+  }
+
+  static addNotification(
+      {required String idUser,
+      required String title,
+      required String content,
+      required String avartarUrl}) async {
+    CollectionReference notifications =
+        FirebaseFirestore.instance.collection('notifications');
+    try {
+      DateTime currentTime = DateTime.now();
+      await notifications.add({
+        'title': title,
+        'content': content,
+        'idUser': idUser,
+        'time': currentTime,
+        'image': avartarUrl
+      }).then((value) => print("User Added"));
+    } catch (e) {
+      print('Lỗi khi thêm thông báo: $e');
     }
   }
 }

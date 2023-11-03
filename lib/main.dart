@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       title: 'Tick Tock',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: UID != null ? const HomeScreen() : const LoginScreen(),
+      home: UID != null ? HomeScreen() : const LoginScreen(),
     );
   }
 }

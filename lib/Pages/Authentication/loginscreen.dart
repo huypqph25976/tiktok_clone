@@ -29,7 +29,7 @@ class _LoginScreen extends State<LoginScreen> {
     if (userCredential.user != null) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => HomeScreen(),
         ),
       );
     }
@@ -57,8 +57,8 @@ class _LoginScreen extends State<LoginScreen> {
         if (email != null) {
           print('And your email is $email');
         }
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const HomeScreen())));
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => HomeScreen())));
 
         break;
       case FacebookLoginStatus.cancel:

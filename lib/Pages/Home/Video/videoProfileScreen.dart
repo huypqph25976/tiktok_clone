@@ -668,7 +668,8 @@ class VideoProfileScreen extends StatelessWidget {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              VideoService.likeVideo(item.id);
+                                              VideoService.likeVideo(
+                                                  item.id, item.uid);
                                             },
                                             child: Icon(
                                               Icons.favorite,

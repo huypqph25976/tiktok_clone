@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:tiktok_clone2/Pages/Home/UserPage/userProfileScreen.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
 import 'package:tiktok_clone2/Widgets/snackBar.dart';
@@ -55,7 +56,6 @@ class UserService {
             'bio': 'Bio not yet',
             'isOnline': true,
             'lastActive': DateTime.now(),
-
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -71,7 +71,7 @@ class UserService {
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
       const storage = FlutterSecureStorage();
-      String? UID = await storage.read(key: 'UID');
+      String? UID = await storage.read(key: 'uID');
       users
           .doc(UID)
           .update({
@@ -81,10 +81,13 @@ class UserService {
           })
           .then((value) => print("User Updated"))
           .catchError((error) => print("Failed to update user: $error"));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const UserProfileScreen()),
-      );
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                    sendIndex: 4,
+                  )),
+          (route) => false);
       getSnackBar(
         'Edit Info',
         'Edit Success.',
