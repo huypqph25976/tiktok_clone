@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tiktok_clone2/Services/storageService.dart';
+import 'package:video_editor/video_editor.dart';
 
 class UploadVideoForm extends StatefulWidget {
   final File videoFile;
   final String videoPath;
+
 
   const UploadVideoForm(
       {Key? key, required this.videoFile, required this.videoPath})
@@ -21,6 +24,7 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController songNameController = TextEditingController();
   final TextEditingController captionController = TextEditingController();
+
 
   @override
   void initState() {
@@ -42,6 +46,20 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
     super.dispose();
 
     playerController!.dispose();
+  }
+
+  // Future<void> editVideo() async {
+  //   final editor = VideoEditorController()
+  //   await editor.open('path/to/video.mp4');
+  //   await editor.trim(start: Duration(seconds: 5), end: Duration(seconds: 10));
+  //   await editor.export('path/to/exported/video.mp4');
+  // }
+
+// Hàm để lưu video vào Firebase
+  Future<void> saveVideoToFirebase() async {
+    final videoBytes = File('path/to/exported/video.mp4').readAsBytesSync();
+    final storageRef = FirebaseStorage.instance.ref().child('videos/video.mp4');
+    await storageRef.putData(videoBytes);
   }
 
   @override

@@ -212,7 +212,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                          child: data['type'] == 'image' ? GestureDetector(onLongPress: (){},
+                                          child: data['type'] == 'images' ? GestureDetector(onLongPress: (){},
                                           child: Container(),
                                           ) : BubbleSpecialThree(
                                               text: data['content'],
@@ -290,13 +290,13 @@ class _ChatDetailState extends State<ChatDetail> {
                               //   context.read<LoadingModel>().changeLoading();
                               // } else {
                                 String fileImage = await StorageService.uploadImage(image);
-                                sendMessage(fileImage, personID, 'image');
+                                sendMessage(fileImage, personID, 'images');
                                 // try {
                                 //   // context.read<LoadingModel>().changeLoading();
                                 // } catch (e) {}
                               // }
 
-                            }, icon: Icon(Icons.enhance_photo_translate, color: Colors.black,)),
+                            }, icon: const Icon(Icons.enhance_photo_translate, color: Colors.black,)),
 
                         IconButton(
                             onPressed: () async {
@@ -306,7 +306,7 @@ class _ChatDetailState extends State<ChatDetail> {
                               //   context.read<LoadingModel>().changeLoading();
                               // } else {
                                 String fileImage = await StorageService.uploadImage(image);
-                                sendMessage(fileImage, personID, 'image');
+                                sendMessage(fileImage, personID, 'images');
                                 // try {
                                 //   context
                                 //       .read<LoadingModel>()
@@ -314,7 +314,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                 // } catch (e) {}
                               // }
                             },
-                            icon: Icon(Icons.image_outlined, color: Colors.black)),
+                            icon: const Icon(Icons.image_outlined, color: Colors.black)),
 
                         Expanded(
                           child: Container(
@@ -324,7 +324,7 @@ class _ChatDetailState extends State<ChatDetail> {
                               textAlignVertical: TextAlignVertical.bottom,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     width: 2,
                                     color: Colors.black,
                                   ),
@@ -336,7 +336,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                     sendMessage(textEditingController.text,
                                         personID, 'text');
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.send_rounded,
                                     color: Colors.black,
                                   ),
