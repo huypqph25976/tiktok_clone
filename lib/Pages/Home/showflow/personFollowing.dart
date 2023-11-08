@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 
 import '../../../Services/userService.dart';
 
-class Following extends StatefulWidget {
-  const Following({super.key, required this.personID});
+class PersonFollowing extends StatefulWidget {
+  const PersonFollowing({super.key, required this.OtherID});
 
-  final String personID;
+  final String OtherID;
 
   @override
-  State<Following> createState() => _Follower();
+  State<PersonFollowing> createState() => _PersonFollower();
 }
 
-class _Follower extends State<Following> {
+class _PersonFollower extends State<PersonFollowing> {
 
 
   var searchKeyword = "";
@@ -50,7 +50,7 @@ class _Follower extends State<Following> {
                 ),
                 StreamBuilder<DocumentSnapshot>(
                   stream: FirebaseFirestore.instance
-                      .collection('users').doc(uid).snapshots(),
+                      .collection('users').doc(widget.OtherID).snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
@@ -131,24 +131,45 @@ class _Follower extends State<Following> {
                                   ),
                                   const SizedBox(width: 30,),
 
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        UserService.follow(item['uID']);
-                                      },
-                                      child:  !snapshot.data?.get('following').contains(uid) ?
-                                      const Text(
-                                        "Đang Follow",
-                                        style: TextStyle(
-                                          fontSize: 15, color: Colors.white, ),
-                                      ) :
-                                      const Text(
-                                        "Follow",
-                                        style: TextStyle(
-                                          fontSize: 15, color: Colors.white, ),
-                                      )
+                                  // ElevatedButton(
+                                  //     onPressed: () {
+                                  //       UserService.follow(item['uID']);
+                                  //     },
+                                  //     child:  !snapshot.data?.get('following').contains(uid) ?
+                                  //     const Text(
+                                  //       "Đang Follow",
+                                  //       style: TextStyle(
+                                  //         fontSize: 15, color: Colors.white, ),
+                                  //     ) :
+                                  //     const Text(
+                                  //       "Follow",
+                                  //       style: TextStyle(
+                                  //         fontSize: 15, color: Colors.white, ),
+                                  //     )
+                                  //
+                                  // ),
+                          ElevatedButton(
+                          onPressed: ()
+                          {
+                          setState(() {
+                            UserService.follow(item['uID']);
+                          });
+                          },
+                          style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.pink,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 40),),
+                            child: !item['uID'].contains(uid)
+                                ? const Text(
+                              "Follow  ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            )
+                                : const Icon(Icons.person_3),
 
-                                  ),
-
+                          )
                                 ],
                               ),
                             );

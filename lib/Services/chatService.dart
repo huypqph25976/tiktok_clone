@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone2/Pages/Home/chats/chat_detail.dart';
 
@@ -76,5 +79,19 @@ class ChatService {
         .where('uID', whereIn: listPersonChatID)
         .snapshots();
   }
-  
+
+  static Future uploadFileToStorage(File file) async {
+    try {
+      String filePath = file.path.split('/').last;
+      final path = 'chat_images/${filePath}';
+      final ref = FirebaseStorage.instance.ref().child(path);
+      UploadTask uploadTask = ref.putFile(File(file.path));
+      TaskSnapshot snap = await uploadTask;
+      String downloadUrl = await snap.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      throw Exception("uploadImageToStorage:________________________$e");
+    }
+  }
+
 }

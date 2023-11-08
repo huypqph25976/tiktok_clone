@@ -1,10 +1,14 @@
 import 'dart:io';
 
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tiktok_clone2/Services/storageService.dart';
-import 'package:video_editor/video_editor.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
+
 
 class UploadVideoForm extends StatefulWidget {
   final File videoFile;
@@ -48,18 +52,22 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
     playerController!.dispose();
   }
 
-  // Future<void> editVideo() async {
-  //   final editor = VideoEditorController()
-  //   await editor.open('path/to/video.mp4');
-  //   await editor.trim(start: Duration(seconds: 5), end: Duration(seconds: 10));
-  //   await editor.export('path/to/exported/video.mp4');
-  // }
+  void addTextOnVideo(String videoPath, String text) async {
+    final String outputPath = '${Directory.systemTemp.path}/output.mp4';
 
-// Hàm để lưu video vào Firebase
-  Future<void> saveVideoToFirebase() async {
-    final videoBytes = File('path/to/exported/video.mp4').readAsBytesSync();
-    final storageRef = FirebaseStorage.instance.ref().child('videos/video.mp4');
-    await storageRef.putData(videoBytes);
+    final String fontPath = '${Directory.systemTemp.path}/OpenSans-Regular.ttf';
+    final ByteData fontData = await rootBundle.load('assets/fonts/OpenSans-Regular.ttf');
+    final File fontFile = File(fontPath);
+    await fontFile.writeAsBytes(fontData.buffer.asUint8List(), flush: true);
+
+    final String command = '-i $videoPath -vf "drawtext=fontfile=$fontPath:text=$text:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2" $outputPath';
+
+    final int rc = (await FFmpegKit.executeAsync(command)) as int;
+    if (ReturnCode.isSuccess(rc as ReturnCode?)) {
+      final FirebaseStorage storage = FirebaseStorage.instance;
+      final Reference ref = storage.ref().child('output.mp4');
+      await ref.putFile(File(outputPath));
+    }
   }
 
   @override

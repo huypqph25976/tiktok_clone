@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+
 import 'package:tiktok_clone2/Pages/Home/UserPage/PersonInfomation.dart';
 
 import '../../../Providers/loading_model.dart';
@@ -113,6 +115,7 @@ class _ChatDetailState extends State<ChatDetail> {
   Widget build(BuildContext context) {
     // context.read<LoadingModel>().isLoading = false;
     // context.read<SaveModel>().isSaving = 0.0;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -182,21 +185,8 @@ class _ChatDetailState extends State<ChatDetail> {
               children: [
                 Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black87.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 2,
-                            offset: const Offset(
-                                1, 1), // changes position of shadow
-                          ),
-                        ],
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
@@ -212,19 +202,40 @@ class _ChatDetailState extends State<ChatDetail> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                          child: data['type'] == 'images' ? GestureDetector(onLongPress: (){},
-                                          child: Container(),
-                                          ) : BubbleSpecialThree(
-                                              text: data['content'],
-                                              color: isSender(data['uID'].toString()) ? Colors.blue : Colors.grey,
-                                              tail: true,
-                                              isSender: isSender(data['uID'].toString()),
-                                              textStyle: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                              ),
+                                        child: data['type'] == 'images'
+                                            ? GestureDetector(
 
+                                          child: Container(
+                                            width: 200,
+                                            height: 200,
+                                            padding:
+                                            const EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            alignment: isSender(
+                                                data['uID']
+                                                    .toString())
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
+                                            child: Image.network(
+                                              data['content'],
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
+                                        )
+                                            : BubbleSpecialThree(
+                                          text: data['content'],
+                                          color: isSender(
+                                              data['uID'].toString())
+                                              ? Colors.pink
+                                              : Colors.grey.shade300,
+                                          tail: true,
+                                          isSender: isSender(
+                                              data['uID'].toString()),
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontFamily: 'Poppins'),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -285,36 +296,17 @@ class _ChatDetailState extends State<ChatDetail> {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              File? image = await getImage(ImageSource.camera);
-                              // if (image == null) {
-                              //   context.read<LoadingModel>().changeLoading();
-                              // } else {
-                                String fileImage = await StorageService.uploadImage(image);
-                                sendMessage(fileImage, personID, 'images');
-                                // try {
-                                //   // context.read<LoadingModel>().changeLoading();
-                                // } catch (e) {}
-                              // }
-
+                              File? fileImage = await getImage(ImageSource.camera);
+                              String fileName = await StorageService.uploadImageToChat(fileImage);
+                              sendMessage(fileName, personID, 'images');
                             }, icon: const Icon(Icons.enhance_photo_translate, color: Colors.black,)),
 
                         IconButton(
                             onPressed: () async {
-                              // context.read<LoadingModel>().changeLoading();
-                              File? image = await getImage(ImageSource.gallery);
-                              // if (fileImage == null) {
-                              //   context.read<LoadingModel>().changeLoading();
-                              // } else {
-                                String fileImage = await StorageService.uploadImage(image);
-                                sendMessage(fileImage, personID, 'images');
-                                // try {
-                                //   context
-                                //       .read<LoadingModel>()
-                                //       .changeLoading();
-                                // } catch (e) {}
-                              // }
-                            },
-                            icon: const Icon(Icons.image_outlined, color: Colors.black)),
+                              File? fileImage = await getImage(ImageSource.gallery);
+                              String fileName = await StorageService.uploadImageToChat(fileImage);
+                              sendMessage(fileName, personID, 'images');
+                            }, icon: const Icon(Icons.image_outlined, color: Colors.black)),
 
                         Expanded(
                           child: Container(
@@ -335,6 +327,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                   onPressed: () {
                                     sendMessage(textEditingController.text,
                                         personID, 'text');
+
                                   },
                                   icon: const Icon(
                                     Icons.send_rounded,

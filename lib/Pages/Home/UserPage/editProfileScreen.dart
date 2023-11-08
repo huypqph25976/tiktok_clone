@@ -149,15 +149,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     margin: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 10),
                     child: TextInputWidget(
-                        textEditingController: email,
-                        iconData: Icons.email,
-                        lableString: "Email",
-                        isObscure: false),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    child: TextInputWidget(
                         textEditingController: phone,
                         iconData: Icons.phone,
                         lableString: "Phone",

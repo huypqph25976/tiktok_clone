@@ -138,14 +138,13 @@ class _Follower extends State<Follower> {
                                   ElevatedButton(
                                     onPressed: ()
                                     {
-                                      UserService.follow(widget.personID);
+                                      UserService.follow(item['uID']);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.pink,
                                       elevation: 0,
                                       padding: const EdgeInsets.symmetric(horizontal: 40),),
-                                    child:followerId==null?
-
+                                    child:!snapshot.data?.get('following').contains(item['uID']) ?
                                     const Text(
                                       "Follow lại ",
                                       style: TextStyle(

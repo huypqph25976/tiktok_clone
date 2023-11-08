@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 
 import '../../../Services/userService.dart';
 
-class Following extends StatefulWidget {
-  const Following({super.key, required this.personID});
+class PersonFollower extends StatefulWidget {
+  const PersonFollower({super.key, required this.personID});
 
   final String personID;
 
   @override
-  State<Following> createState() => _Follower();
+  State<PersonFollower> createState() => _PersonFollower();
 }
 
-class _Follower extends State<Following> {
+class _PersonFollower extends State<PersonFollower> {
 
 
   var searchKeyword = "";
@@ -50,7 +50,7 @@ class _Follower extends State<Following> {
                 ),
                 StreamBuilder<DocumentSnapshot>(
                   stream: FirebaseFirestore.instance
-                      .collection('users').doc(uid).snapshots(),
+                      .collection('users').doc(widget.personID).snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
@@ -67,9 +67,9 @@ class _Follower extends State<Following> {
                       scrollDirection: Axis.vertical,
                       physics: const NeverScrollableScrollPhysics(),
 
-                      itemCount: snapshot.data!['following'].length,
+                      itemCount: snapshot.data!['follower'].length,
                       itemBuilder: (BuildContext context, int index) {
-                        String followingId = snapshot.data!['following'][index].toString();
+                        String followingId = snapshot.data!['follower'][index].toString();
                         DocumentReference followingRef = FirebaseFirestore.instance
                             .collection('users')
                             .doc(followingId);

@@ -26,6 +26,21 @@ class StorageService {
     return imageURL;
   }
 
+  static Future<String> uploadImageToChat(File? imageFile) async {
+    String fileName = const Uuid().v1();
+    String currentUid = FirebaseAuth.instance.currentUser!.uid;
+    var ref = FirebaseStorage.instance
+        .ref()
+        .child('chat_images')
+        .child(currentUid)
+        .child('$fileName.jpg');
+    var uploadTask = await ref.putFile(imageFile!);
+    String imageURL = await uploadTask.ref.getDownloadURL();
+    return imageURL;
+  }
+
+
+
   static Future<void> deleteVideo(BuildContext context, String videoId,
       String videoUrl, String thumbnail) async {
     try {
@@ -105,10 +120,9 @@ class StorageService {
     }
   }
 
-  static Future<String> uploadImageToStorage(
-      String id, String videoPath) async {
-    String currentUid = FirebaseAuth.instance.currentUser!.uid;
+  static Future<String> uploadImageToStorage(String id, String videoPath) async {
 
+    String currentUid = FirebaseAuth.instance.currentUser!.uid;
     Reference ref = FirebaseStorage.instance
         .ref()
         .child('thumbnails')

@@ -10,6 +10,7 @@ import 'package:tiktok_clone2/Pages/Home/PersonTabbar/PersonTab2.dart';
 
 import '../../../Services/userService.dart';
 import '../Video/uploadVideoForm.dart';
+import '../showflow/personShowflowscreen.dart';
 import 'changePasswordScreen.dart';
 
 class PersonInformation extends StatefulWidget {
@@ -172,18 +173,34 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                             height: 4,
                           ),
 
-                          Text(
-                            snapshot.data.get('following').length.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Colors.black),
+
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => PresonShowFollowScreen(OtherID: widget.personID,)));
+                            },
+                            child:  Text(
+                              snapshot.data.get('following').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+
+                            ),
                           ),
-                          Text(
-                            "Followed",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
-                          ),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => PresonShowFollowScreen(OtherID: widget.personID)));
+                            },
+                            child:
+                            const Text(
+                              "Following",
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
+
+
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(
@@ -195,18 +212,33 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                             height: 4,
                           ),
 
-                          Text(
-                            snapshot.data.get('follower').length.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Colors.black),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => PresonShowFollowScreen(OtherID:  widget.personID)));
+                            },
+                            child:  Text(
+                              snapshot.data.get('follower').length.toString(),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 20),
+
+                            ),
                           ),
-                          Text(
-                            "Follower",
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.grey.shade700),
-                          ),
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context,  MaterialPageRoute(
+                                  builder: (context) => PresonShowFollowScreen(OtherID:  widget.personID)));
+                            },
+                            child:
+                            const Text(
+                              "follower",
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
+
+
+                            ),
+                          )
                         ],
                       ),
                     ],
@@ -219,19 +251,19 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                           UserService.follow(widget.personID);
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.pink,
-                            elevation: 0,
-                            padding: const EdgeInsets.symmetric(horizontal: 60),),
-                            child:  !snapshot.data.get('follower').contains(uid) ?
+                          backgroundColor: Colors.pink,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 60),),
+                        child:  !snapshot.data.get('follower').contains(uid) ?
 
-                             const Text(
-                                "Follow",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white, ),
-                              ) :
-                            const Icon(Icons.person_3),
+                        const Text(
+                          "Follow",
+                          style: TextStyle(
+                            fontSize: 15, color: Colors.white, ),
+                        ) :
+                        const Icon(Icons.person_3),
 
-                          ),
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
@@ -288,7 +320,7 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
                   const SizedBox(
                     height: 8,
                   ),
-                   Container(
+                  Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: TabBarView(
