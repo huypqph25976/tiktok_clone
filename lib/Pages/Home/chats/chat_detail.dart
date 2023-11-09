@@ -227,7 +227,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                           color: isSender(
                                               data['uID'].toString())
                                               ? Colors.pink
-                                              : Colors.grey.shade300,
+                                              : Colors.black,
                                           tail: true,
                                           isSender: isSender(
                                               data['uID'].toString()),
