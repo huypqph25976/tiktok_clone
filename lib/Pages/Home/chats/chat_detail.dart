@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class _ChatDetailState extends State<ChatDetail> {
   final currentUserID = FirebaseAuth.instance.currentUser?.uid;
   var chatDocID;
   final TextEditingController textEditingController = TextEditingController();
+  bool showEmoji = false;
 
   _ChatDetailState(
       this.personID, this.personUsername, this.chatID, this.personImage);
@@ -109,7 +111,12 @@ class _ChatDetailState extends State<ChatDetail> {
     return null;
   }
 
-
+  _onBackspacePressed() {
+    textEditingController
+      ..text = textEditingController.text.characters.skipLast(1).toString()
+      ..selection = TextSelection.fromPosition(
+          TextPosition(offset: textEditingController.text.length));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +129,8 @@ class _ChatDetailState extends State<ChatDetail> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
+
             Container(
               height: 50,
               width: 50,
@@ -198,6 +207,28 @@ class _ChatDetailState extends State<ChatDetail> {
                               padding: const EdgeInsets.only(top: 20.0),
                               child: Column(
                                 children: [
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        data['createdOn'] == null
+                                            ? DateTime.now().toString()
+                                            : DateFormat.yMMMd()
+                                            .add_jm()
+                                            .format(
+                                            data['createdOn'].toDate()),
+                                        style: const TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -236,26 +267,6 @@ class _ChatDetailState extends State<ChatDetail> {
                                               fontSize: 16,
                                               fontFamily: 'Poppins'),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        data['createdOn'] == null
-                                            ? DateTime.now().toString()
-                                            : DateFormat.yMMMd()
-                                            .add_jm()
-                                            .format(
-                                            data['createdOn'].toDate()),
-                                        style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 12),
                                       ),
                                     ],
                                   ),
@@ -308,6 +319,16 @@ class _ChatDetailState extends State<ChatDetail> {
                               sendMessage(fileName, personID, 'images');
                             }, icon: const Icon(Icons.image_outlined, color: Colors.black)),
 
+                        IconButton(
+                            onPressed: () async {
+                              setState(() {
+                                showEmoji = !showEmoji;
+                              });
+
+                            }, icon: const Icon(Icons.emoji_emotions, color: Colors.black)),
+
+
+
                         Expanded(
                           child: Container(
                             height: 45,
@@ -333,6 +354,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                     Icons.send_rounded,
                                     color: Colors.black,
                                   ),
+
                                 ),
                               ),
                             ),
@@ -341,6 +363,50 @@ class _ChatDetailState extends State<ChatDetail> {
                       ],
                     ),
                   ),
+                ),
+
+                Offstage(
+                  offstage: !showEmoji,
+                  child: SizedBox(
+                      height: 250,
+                      child: EmojiPicker(
+                        textEditingController: textEditingController,
+                        onBackspacePressed: _onBackspacePressed,
+                        config: Config(
+                          columns: 7,
+                          // Issue: https://github.com/flutter/flutter/issues/28894
+                          emojiSizeMax: 32 *
+                              (foundation.defaultTargetPlatform ==
+                                  TargetPlatform.iOS
+                                  ? 1.30
+                                  : 1.0),
+                          verticalSpacing: 0,
+                          horizontalSpacing: 0,
+                          gridPadding: EdgeInsets.zero,
+                          initCategory: Category.RECENT,
+                          bgColor: const Color(0xFFF2F2F2),
+                          indicatorColor: Colors.blue,
+                          iconColor: Colors.grey,
+                          iconColorSelected: Colors.blue,
+                          backspaceColor: Colors.blue,
+                          skinToneDialogBgColor: Colors.white,
+                          skinToneIndicatorColor: Colors.grey,
+                          enableSkinTones: true,
+                          recentTabBehavior: RecentTabBehavior.RECENT,
+                          recentsLimit: 28,
+                          replaceEmojiOnLimitExceed: false,
+                          noRecents: const Text(
+                            'No Recents',
+                            style: TextStyle(fontSize: 20, color: Colors.black26),
+                            textAlign: TextAlign.center,
+                          ),
+                          loadingIndicator: const SizedBox.shrink(),
+                          tabIndicatorAnimDuration: kTabScrollDuration,
+                          categoryIcons: const CategoryIcons(),
+                          buttonMode: ButtonMode.MATERIAL,
+                          checkPlatformCompatibility: true,
+                        ),
+                      )),
                 ),
               ],
             );

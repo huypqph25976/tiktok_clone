@@ -6,6 +6,7 @@ import 'package:tiktok_clone2/Pages/Authentication/loginwithemail.dart';
 import 'package:tiktok_clone2/Pages/Authentication/loginwithphone.dart';
 import 'package:tiktok_clone2/Pages/Home/Notification/NotificationService.dart';
 import 'package:tiktok_clone2/Pages/Home/homeScreen.dart';
+import 'package:tiktok_clone2/Providers/google_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,23 +16,40 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  signInWithGoogle() async {
-    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  // signInWithGoogle() async {
+  //   GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //
+  //   GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+  //
+  //   AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+  //
+  //   UserCredential userCredential =
+  //       await FirebaseAuth.instance.signInWithCredential(credential);
+  //   print(userCredential.user?.displayName);
+  //   if (userCredential.user != null) {
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (context) => HomeScreen(),
+  //       ),
+  //     );
+  //   }
+  // }
 
-    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+  final SignInWithGoogleProvider provider = SignInWithGoogleProvider();
 
-    AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+  Future<void> signInWithGoogle(BuildContext context) async {
+    await provider.signInWithGoogle(); // Gọi hàm đăng nhập với Google từ AuthProvider
 
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    print(userCredential.user?.displayName);
-    if (userCredential.user != null) {
+    if (provider.user != null) {
+      // Xử lý khi đăng nhập thành công (nếu cần)
       Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
+    } else {
+      // Xử lý khi đăng nhập thất bại
     }
   }
 
@@ -187,8 +205,8 @@ class _LoginScreen extends State<LoginScreen> {
                     children: [
                       const SizedBox(height: 20),
                       ElevatedButton(
-                          onPressed: () {
-                            signInWithGoogle();
+                          onPressed: () async {
+                            await signInWithGoogle(context); //
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey),
