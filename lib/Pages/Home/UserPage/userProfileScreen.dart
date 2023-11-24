@@ -36,8 +36,8 @@ class _UserProfileScreenState extends State<UserProfileScreen>
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UploadVideoForm(
-            videoFile: File(videoFile.path),
-            videoPath: videoFile.path,
+           XFile(videoFile.path),
+            videoFile.path,
           ),
         ),
       );

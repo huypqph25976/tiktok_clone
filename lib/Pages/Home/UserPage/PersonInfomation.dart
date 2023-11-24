@@ -58,8 +58,8 @@ class _PersonInformationState extends State<PersonInformation> with TickerProvid
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UploadVideoForm(
-            videoFile: File(video.path),
-            videoPath: video.path,
+             XFile(video.path),
+             video.path,
           ),
         ),
       );

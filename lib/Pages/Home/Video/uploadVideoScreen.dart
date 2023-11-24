@@ -20,8 +20,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => UploadVideoForm(
-            videoFile: File(videoFile.path),
-            videoPath: videoFile.path,
+             XFile(videoFile.path),
+             videoFile.path,
           ),
         ),
       );

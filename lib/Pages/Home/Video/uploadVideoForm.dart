@@ -1,22 +1,21 @@
 import 'dart:io';
 
 
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:tiktok_clone2/Pages/Home/Video/edit_video_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tiktok_clone2/Services/storageService.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/return_code.dart';
+
 
 
 class UploadVideoForm extends StatefulWidget {
-  final File videoFile;
+  final XFile videoFile;
   final String videoPath;
 
 
-  const UploadVideoForm(
-      {Key? key, required this.videoFile, required this.videoPath})
+  const UploadVideoForm(this.videoFile, this.videoPath,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -24,6 +23,7 @@ class UploadVideoForm extends StatefulWidget {
 }
 
 class _UploadVideoFormState extends State<UploadVideoForm> {
+  late XFile file;
   VideoPlayerController? playerController;
   final formKey = GlobalKey<FormState>();
   final TextEditingController songNameController = TextEditingController();
@@ -32,11 +32,10 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
 
   @override
   void initState() {
+    file = widget.videoFile;
     // TODO: implement initState
+    playerController = VideoPlayerController.file(File(file.path));
     super.initState();
-    setState(() {
-      playerController = VideoPlayerController.file(widget.videoFile);
-    });
 
     playerController!.initialize();
     playerController!.play();
@@ -52,23 +51,7 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
     playerController!.dispose();
   }
 
-  void addTextOnVideo(String videoPath, String text) async {
-    final String outputPath = '${Directory.systemTemp.path}/output.mp4';
 
-    final String fontPath = '${Directory.systemTemp.path}/OpenSans-Regular.ttf';
-    final ByteData fontData = await rootBundle.load('assets/fonts/OpenSans-Regular.ttf');
-    final File fontFile = File(fontPath);
-    await fontFile.writeAsBytes(fontData.buffer.asUint8List(), flush: true);
-
-    final String command = '-i $videoPath -vf "drawtext=fontfile=$fontPath:text=$text:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2" $outputPath';
-
-    final int rc = (await FFmpegKit.executeAsync(command)) as int;
-    if (ReturnCode.isSuccess(rc as ReturnCode?)) {
-      final FirebaseStorage storage = FirebaseStorage.instance;
-      final Reference ref = storage.ref().child('output.mp4');
-      await ref.putFile(File(outputPath));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +77,49 @@ class _UploadVideoFormState extends State<UploadVideoForm> {
                 height: MediaQuery.of(context).size.height / 1.6,
                 child: VideoPlayer(playerController!),
               ),
-              const SizedBox(
+
+              Container(
+                width: 200,
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    playerController?.pause();
+                    final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EditVideo(File(file.path)),
+                        ));
+                    if (result != null) {
+                      print('đã vào đây $result');
+                      playerController =
+                          VideoPlayerController.file(File(result));
+                      playerController?.play();
+                      playerController?.initialize().then((value) => {
+                        if (mounted)
+                          {
+                            setState(() {
+                              file = XFile(result);
+                            })
+                            // Kích hoạt lại build để hiển thị video
+                          }
+                      });
+                    }
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black),
+                  child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        "Cut Video",
+                        style:
+                        TextStyle(fontSize: 15, color: Colors.white),
+                      )),
+                ),
+              ),
+
+               const SizedBox(
                 height: 15,
               ),
               Form(
